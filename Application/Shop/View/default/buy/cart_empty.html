@@ -1,0 +1,18 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+<include file="common/global_vars"/>
+
+<div class="spdc-null-shopping"><i class="ico"></i>
+  <h4><?php echo $lang['cart_index_no_goods_in_cart'];?></h4>
+  <p><a href="<?php echo $_PAGE_URL; ?>" class="dabtn mr10"><i class="icon-reply-all"></i><?php echo $lang['cart_index_shopping_now'];?></a> <a href="<?php echo $_PAGE_URL; ?>&c=MemberOrder" class="dabtn"><i class="icon-file-text"></i><?php echo $lang['cart_index_view_my_order'];?></a></p>
+</div>
+<!-- 猜你喜欢 -->
+<div id="guesslike_div"></div>
+<script type="text/javascript">
+$(function(){ 
+	//猜你喜欢
+	$('#guesslike_div').load('<?php echo urlShop('search', 'get_guesslike', array()); ?>', function(){ 
+        $(this).show();
+    });
+});
+</script> 

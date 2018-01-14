@@ -1,0 +1,162 @@
+<?php defined('IN_SHOPDA') || exit;?>
+<include file="common/global_vars"/>
+
+<style>
+.green {
+  color:green;
+}
+
+</style>
+
+<div class="tabmenu">
+  	<include file="layout/submenu" />
+
+<form method="get" action="<?php echo $_PAGE_URL; ?>">
+  <table class="search-form">
+     <input type="hidden" name="m" value="Shop" />
+		  <input type="hidden" name="c" value="FunnyGames" />
+    <input type="hidden" name="a" value="game_lists" />
+    <tr>
+      <td>&nbsp;</td>
+      <th></th>
+      <td class="w160"><select name=game_class class="w150">
+        <option value="0">全部</option>
+        <?php if (is_array($output['games_class_list'])) { ?>
+        <?php foreach ($output['games_class_list'] as $val) { ?>
+        <option value="<?php echo $val['id'];?>" <?php if ($_GET['game_class'] == $val['id']) { ?>selected<?php }?>><?php echo $val['game_class_name'];?></option>
+        <?php }?>
+        <?php }?>
+      </select></td>
+    
+      <td class="w160"><input type="text" class="text w150" name="keyword" value="<?php echo $_GET['keyword']; ?>"/></td>
+      <td class="tc w70"><label class="submit-border">
+          <input type="submit" class="submit" value="<?php echo $lang['spd_search'];?>" />
+        </label></td>
+    </tr>
+  </table>
+</form>
+
+<style>
+.game-list td:first {
+border-top:0px;
+}
+.game-list td {
+border-top:1px solid #d6d2d2;
+}
+.game-list .game-icon {
+}
+.game-list .game-icon img{
+width:80px;
+height:80px;
+} 
+
+</style>
+
+<table class="spdsc-default-table game-list">
+  <thead>
+    <tr spd_type="table_header">
+      <th class="w100"><?php echo $lang['game_icon'];?></th>
+      <th class="w100"><?php echo $lang['game_name'];?></th>
+      <th class="w120"><?php echo $lang['game_desc'];?></th>
+      <th class="w100"><?php echo $lang['game_class'];?></th>
+      <th class="w100"><?php echo $lang['game_key'];?></th>
+      <th class="w100">状态</th>
+      <th class="w120"><?php echo $lang['spd_handle'];?></th>
+    </tr>
+  </thead>
+  
+  <tbody>
+    <?php if (!empty($output['game_list'])) {  ?>
+
+
+         <?php foreach ($output['game_list'] as $val) {  ?>
+
+           		    
+		    <tr>
+		    	<td class="game-icon" class="w100"><img src="<?php echo $val['game_icon']; ?>" /></td>
+		    	<td  class="w100"><?php echo $val['game_name']; ?></td>
+		    	<td  class="w120"><?php echo $val['game_desc']; ?></td>
+		    	
+		    	<td  class="w100"><?php echo $val['game_class']['game_class_name']; ?></td>
+		    	<td  class="w100"><?php echo $val['game_key']; ?></td>
+		    	<td  class="w100"><font class="<?php if ($val['apply_info']['is_open'] == '1') {echo "green";} ?>"><?php echo empty($val['apply_info']['check_status_desc']) ? "初始化" : $val['apply_info']['check_status_desc']; ?>
+		    	</font>
+		    	</td>
+		    	<td   class="w120 nscs-table-handle">
+		    		
+		    		<?php if ($val['game_privilege'] == true) { ?>
+		        
+				        <span><a href="<?php echo urlShop('FunnyGames', 'game_config', array('game_key' => $val['game_key']));?>" 
+				        class="btn-bluejeans"><i class="icon-pencil"></i>
+				        <p>配置游戏</p>
+				        </a></span>
+				        
+				        
+				        <span><a target="_blank" href="<?php echo urlShop('FunnyGames', 'game_preview', array('game_key' => $val['game_key']));?>"
+				         class="btn-grapefruit"><i class="icon-desktop"></i>
+				        <p>游戏预览</p>
+				        </a></span>
+				        
+		            <?php } else { ?>
+				        
+				        
+				         <?php if (empty($val['apply_info'])) { ?>
+				        
+						        <span class="tip" title="点击申请游戏配置">
+						 
+						         <a  href="javascript:void(0);" 
+						         onclick="ajax_get_confirm('确定申请配置权限吗？', '<?php echo urlShop('FunnyGames', 'game_apply', array('game_key' => $val['game_key']));?>');"
+						         class="btn-grapefruit"><i class="icon-upload-alt"></i>
+						        
+						        <p>申请配置</p>
+						        </a></span>
+						        
+				        <?php } ?>
+				        
+				         <span><a target="_blank" href="<?php echo urlShop('FunnyGames', 'game_preview', array('game_key' => $val['game_key']));?>"
+				          class="btn-grapefruit"><i class="icon-desktop"></i>
+				        <p>游戏预览</p>
+				        </a></span>
+		        
+		        	<?php }?>
+		    	
+		    	
+		    	</td>
+		    	
+		    </tr>		
+
+ 
+	     <?php } ?>
+
+    
+    <?php } ?>
+    
+  </tbody>
+  
+  
+  <tfoot>
+    <?php  if (!empty($output['game_list'])) {  ?>
+    <tr>
+      <td colspan="20"><div class="pagination"> <?php echo $output['show_page']; ?> </div></td>
+    </tr>
+    <?php } ?>
+  </tfoot>
+ 
+</table>
+<script src="<?php echo RESOURCE_SITE_URL;?>/js/jquery.poshytip.min.js"></script> 
+
+<script>
+$(function(){ 
+    //Ajax提示
+    $('.tip').poshytip({
+        className: 'tip-yellowsimple',
+        showTimeout: 1,
+        alignTo: 'target',
+        alignX: 'center',
+        alignY: 'top',
+        offsetY: 5,
+        allowTipHover: false
+    });
+    
+});
+</script>

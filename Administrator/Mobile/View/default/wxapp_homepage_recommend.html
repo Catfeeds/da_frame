@@ -1,0 +1,26 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+<include file="common/global_vars"/>
+
+
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>微信小程序首页商品推荐</h3>
+        <h5>小程序首页商品推荐</h5>
+      </div>
+      <?php echo $output['top_link'];?> </div>
+  </div>
+  
+  
+  <div>
+  
+  
+<iframe src="<?php echo urlAdminMobile('WxappSpecial','special_item_edit', array('item_id' => 8));?>" 
+        id="workspace" name="workspace" style="overflow: visible;" frameborder="0" width="100%" height="1000px" scrolling="yes" onload="window.parent">
+</iframe>
+  
+  </div>
+  
+</div>

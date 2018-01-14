@@ -1,0 +1,21 @@
+<?php defined('IN_SHOPDA') || exit;?>
+<include file="common/global_vars"/>
+
+
+<script type="text/javascript" src="<?php echo SHOP_RESOURCE_SITE_URL;?>/js/jquery.spd_slider.js" charset="utf-8"></script>
+<div id="store_decoration_area" class="store-decoration-page">
+    <?php if(!empty($output['block_list']) && is_array($output['block_list'])) { ?>
+    <?php foreach($output['block_list'] as $block) { ?>
+	
+	<include file="./store_decoration_block" />
+ 
+    
+	<?php } ?>
+    <?php } ?>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){ 
+        //幻灯片
+        $('[datype="store_decoration_slide"]').spd_slider();
+    });
+</script>

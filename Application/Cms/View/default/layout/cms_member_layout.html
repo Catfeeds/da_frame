@@ -1,0 +1,27 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+<include file="layout/top" />
+
+<include file="common/global_vars"/>
+
+<style type="text/css">
+.search-cms { display: none !important;}
+#topHeader .warp-all { height: 80px !important;}
+#topHeader .cms-logo { top: 8px !important;}
+</style>
+
+
+<div class="cms-spdmember-nav-bar"> 
+  <!-- CMS用户中心导航 -->
+  <ul class="cms-spdmember-nav">
+    <li <?php echo (convert_word_camel_case($_GET['c'])=='MemberArticle')&&$_GET['a']!='article_edit'?' class="current"':'';?>><a href="<?php echo CMS_SITE_URL;?>&c=MemberArticle&a=article_list" ><i class="a"></i><?php echo $lang['cms_article_list'];?></a></li>
+    <li <?php echo ($_GET['a'] =='publish_article') ?' class="current"':'';?>><a href="<?php echo CMS_SITE_URL;?>&c=Publish&a=publish_article"><i class="b"></i><?php echo $lang['cms_article_publish'];?></a></li>
+    <li <?php echo (convert_word_camel_case($_GET['c'])=='MemberPicture')&&$_GET['a']!='picture_edit'?' class="current"':'';?>><a href="<?php echo CMS_SITE_URL;?>&c=MemberPicture&a=picture_list"><i class="c"></i><?php echo $lang['cms_picture_list'];?></a></li>
+    <li <?php echo $_GET['a']=='publish_picture'?' class="current"':'';?>><a href="<?php echo CMS_SITE_URL;?>&c=Publish&a=publish_picture"><i class="d"></i><?php echo $lang['cms_picture_publish'];?></a></li>
+    <li><a href="<?php echo urlLogin('login', 'logout');?>"><i class="e"></i><?php echo $lang['cms_loginout'];?></a></li>
+  </ul></div>
+  
+{__CONTENT__}
+
+
+<include file="layout/footer" />

@@ -1,0 +1,71 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+<include file="common/global_vars"/>
+
+
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>配置申请列表</h3>
+        <h5>配置申请列表</h5>
+      </div>
+      <?php echo $output['top_link'];?> </div>
+  </div>
+
+  <div class="explanation" id="explanation">
+    <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="<?php echo $lang['spd_prompts_title'];?>"><?php echo $lang['spd_prompts'];?></h4>
+      <span id="explanationZoom" title="<?php echo $lang['spd_prompts_span'];?>"></span> </div>
+    <ul>
+      <li><?php echo $lang['member_index_help1'];?></li>
+      <li><?php echo $lang['member_index_help2'];?></li>
+    </ul>
+  </div>
+  <div id="flexigrid"></div>
+</div>
+
+<script type="text/javascript">
+$(function(){ 
+    $("#flexigrid").flexigrid({
+        url: '<?php echo $_PAGE_URL; ?>&c=FunnyGames&a=get_xml&list_type=2',
+        colModel : [
+            {display: '操作', name : 'operation', width : 120, sortable : false, align: 'center', className: 'handle-s'},
+            {display: '序号', name : 'id', width : 40, sortable : true, align: 'center'},
+            {display: '游戏KEY', name : 'game_key', width : 80, sortable : false, align: 'left'},
+            {display: '游戏名称', name : 'game_name', width : 80, sortable : false, align: 'left'},
+            {display: '游戏ICON', name : 'game_icon', width : 150,  align: 'center'},
+            {display: '游戏描述', name : 'game_desc', width : 120, sortable : false, align: 'center'},
+            {display: '审核状态', name : 'check_status_desc', width : 80, sortable : false, align: 'center'},
+            {display: '店铺ID',  name : 'store_id', width : 60, sortable : true, align: 'center'},
+            {display: '店铺名称', name : 'store_name', width : 80, sortable : false, align: 'left'},
+            {display: '游戏开启', name : 'open_info', width : 80, sortable : true, align: 'center'},
+            {display: '游戏分类', name : 'game_class_name', width : 80, sortable : false, align: 'center'},
+            {display: '管理员名', name : 'admin_name', width : 80, sortable : true, align: 'center'},
+            {display: '审核理由', name : 'check_reason', width : 80, sortable : false, align: 'center'}
+            ],
+        buttons : [
+            ],
+        searchitems : [
+            {display: '店铺ID', name : 'store_id'},
+            {display: '游戏名称', name : 'game_name'}
+            ],
+        sortname: "id",
+        sortorder: "desc",
+        title: '游戏申请列表'
+    });
+	
+});
+
+
+function submit_delete(id){ 
+	if (typeof id == 'number') { 
+    	var id = new Array(id.toString());
+	};
+	if(confirm('确认删除这 ' + id.length + ' 项吗？')){ 
+		id = id.join(',');
+        window.location.href = '<?php echo $_PAGE_URL; ?>&c=FunnyGames&a=del_apply&apply_id='+id;
+    }
+}
+
+</script> 

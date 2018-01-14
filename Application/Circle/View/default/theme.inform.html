@@ -1,0 +1,55 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+<include file="common/global_vars"/>
+
+<div class="eject_con inform-reason">
+  <div id="apply_warning"></div>
+  <form id="inform_form" action="<?php echo CIRCLE_SITE_URL;?>&c=ThemeInform&c_id=<?php echo $output['c_id'];?>&t_id=<?php echo $output['t_id']; if(isset($_GET['r_id'])){ echo '&r_id='.$_GET['r_id'];}?>" method="post" onsubmit="ajaxpost('inform_form', '<?php echo CIRCLE_SITE_URL;?>&c=ThemeInform&c_id=<?php echo $output['c_id'];?>&t_id=<?php echo $output['t_id']; if(isset($_GET['r_id'])){ echo '&r_id='.$_GET['r_id'];}?>', '', 'onerror');">
+    <input type="hidden" name="form_submit" value="ok" />
+    <dl>
+      <dt><?php echo $lang['circle_inform_reason'];?></dt>
+      <dd>
+        <h5>
+          <p><?php echo $lang['circle_inform_choosable_reason'].$lang['spd_colon'];?></p>
+          <ul datype="selectable">
+            <li style="display:blank;"><?php echo $lang['circle_inform_reason_1'];?></li>
+            <li style="display:blank;"><?php echo $lang['circle_inform_reason_2'];?></li>
+            <li style="display:blank;"><?php echo $lang['circle_inform_reason_3'];?></li>
+            <li style="display:blank;"><?php echo $lang['circle_inform_reason_4'];?></li>
+            <li style="display:blank;"><?php echo $lang['circle_inform_reason_5'];?></li>
+          </ul>
+        </h5>
+        <p><textarea name="content" class="textarea" id="i_content"></textarea></p>
+        <p><span class="count" id="i_contentcharcount"></span></p>
+      </dd>
+    </dl>
+    <div class="bottom">
+      <a class="submit-btn" datype="inform_submit" href="Javascript: void(0)"><?php echo $lang['spd_submit'];?></a>
+      <a class="cancel-btn" datype="inform_cancel" href="Javascript: void(0)"><?php echo $lang['spd_cancel'];?></a>
+    </div>
+  </form>
+</div>
+<script>
+$(function(){ 
+	$('a[datype="inform_submit"]').click(function(){ 
+		$("#inform_form").submit();
+	});
+	$('a[datype="inform_cancel"]').click(function(){ 
+		DialogManager.close('inform');
+	});
+	$('ul[datype="selectable"] > li').click(function(){ 
+		$('#i_content').val($(this).html());
+	});
+
+   	$.getScript('<?php echo RESOURCE_SITE_URL;?>/js/jquery.charCount.js', function(){ 
+	    $("#i_content").charCount({
+			allowed: 255,
+			warning: 10,
+			counterContainerID:'i_contentcharcount',
+			firstCounterText:'<?php echo $lang['charCount_firsttext'];?>',
+			endCounterText:'<?php echo $lang['charCount_endtext'];?>',
+			errorCounterText:'<?php echo $lang['charCount_errortext'];?>'
+		});
+   	});
+});
+</script>

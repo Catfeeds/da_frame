@@ -1,0 +1,297 @@
+{
+   "platform" : {
+      "name" : "平台",
+      "child" : [
+         {
+            "name" : "商品",
+            "child" : {
+               "system|goods" : "商品评价",
+               "shop|goods" : "商品管理",
+               "shop|goods_class" : "商品分类",
+               "shop|type" : "商品类型",
+               "shop|spec" : "商品规格",
+               "shop|goods_album" : "图片空间",
+               "shop|goods_recommend" : "商品推荐",
+               "mobile|mb_category" : "手机分类图片"
+            }
+         },
+         {
+            "name" : "订单",
+            "child" : {
+               "shop|order" : "实物订单",
+               "shop|vr_order" : "虚拟订单",
+               "shop|refund" : "实物订单退款",
+               "shop|vr_refund" : "虚拟订单退款",
+               "shop|return" : "退货管理"
+            }
+         },
+         {
+            "name" : "店铺",
+            "child" : {
+               "shop|store" : "普通店铺管理",
+               "shop|ownshop" : "自营店铺管理",
+               "shop|store_grade" : "店铺等级",
+               "shop|store_class" : "店铺分类",
+               "shop|domain" : "店铺域名",
+               "shop|sns_strace" : "店铺动态",
+               "shop|help_store" : "店铺帮助",
+               "shop|store_joinin" : "商家入驻",
+               "shop|bill" : "实物订单结算",
+               "shop|vr_bill" : "虚拟订单结算",
+               "shop|brand" : "品牌管理"
+            }
+         }
+      ]
+   },
+   "sale" : {
+      "name" : "销售",
+      "child" : [
+         {
+            "name" : "设置",
+            "child" : {
+               "shop|operation" : "促销设置",
+               "shop|vr_groupbuy" : "虚拟抢购设置"
+            }
+         },
+         {
+            "name" : "抢购",
+            "child" : {
+               "shop|activity" : "活动管理",
+               "shop|groupbuy" : "抢购管理",
+               "shop|promotion_cou" : "加价购",
+               "shop|promotion_xianshi" : "限时折扣",
+               "shop|promotion_mansong" : "满即送",
+               "shop|promotion_bundling" : "优惠套装",
+               "shop|promotion_booth" : "推荐展位",
+               "shop|promotion_book" : "预售商品",
+               "shop|promotion_combo" : "推荐组合",
+               "shop|promotion_sole" : "手机专享"
+            }
+         },
+         {
+            "name" : "券码",
+            "child" : {
+               "shop|pointprod" : "积分兑换",
+               "shop|voucher" : "店铺代金券",
+               "shop|redpacket" : "平台红包",
+               "shop|promotion_fcode" : "F码商品"
+            }
+         }
+      ]
+   },
+   "operate" : {
+      "name" : "运营",
+      "child" : [
+         {
+            "name" : "PC端",
+            "child" : {
+               "shop|operating" : "设置",
+               "system|store" : "分销管理",
+               "shop|consulting" : "用户咨询",
+               "shop|inform" : "用户举报",
+               "shop|evaluate" : "用户评价",
+               "shop|complain" : "用户投诉",
+               "shop|mall_consult" : "平台客服",
+               "shop|delivery" : "物流自提服务站",
+               "shop|contract" : "消费者保障服务",
+               "shop|rechargecard" : "平台充值卡"
+            }
+         },
+         {
+            "name" : "手机端",
+            "child" : {
+               "mobile|mb_setting" : "设置",
+               "mobile|mb_logo" : "LOGO",
+               "mobile|mb_special" : "模板",
+               "mobile|mb_feedback" : "用户反馈",
+               "mobile|wxapp_special" : "小程序",
+               "mobile|funny_games" : "H5游戏"
+            }
+         }
+      ]
+   },
+   "content" : {
+      "name" : "内容",
+      "child" : [
+         {
+            "name" : "商城",
+            "child" : {
+               "system|shopda" : "基础设置",
+               "shop|setting" : "扩展设置",
+               "system|navigation" : "页面导航",
+               "shop|web_config" : "商城首页",
+               "system|adv" : "广告管理",
+               "system|rec_position" : "推荐位",
+               "system|article_class" : "文章分类",
+               "system|article" : "文章管理",
+               "system|document" : "会员协议",
+               "shop|web_channel" : "频道",
+               "system|link" : "友情链接"
+            }
+         },
+         {
+            "name" : "资讯",
+            "child" : {
+               "cms|cms_manage" : "资讯设置",
+               "cms|cms_index" : "首页管理",
+               "cms|cms_navigation" : "导航管理",
+               "cms|cms_tag" : "标签管理",
+               "cms|cms_comment" : "评论管理"
+            }
+         },
+         {
+            "name" : "专题",
+            "child" : {
+               "cms|cms_special" : "专题管理"
+            }
+         },
+         {
+            "name" : "文章",
+            "child" : {
+               "cms|cms_article_class" : "文章分类",
+               "cms|cms_article" : "文章管理"
+            }
+         },
+         {
+            "name" : "画报",
+            "child" : {
+               "cms|cms_picture_class" : "画报分类",
+               "cms|cms_picture" : "画报管理"
+            }
+         }
+      ]
+   },
+   "customer" : {
+      "name" : "客户",
+      "child" : [
+         {
+            "name" : "账户",
+            "child" : {
+               "system|member" : "会员资料",
+               "shop|member" : "账户详情"
+            }
+         },
+         {
+            "name" : "动态",
+            "child" : {
+               "shop|snstrace" : "会员动态",
+               "shop|member_exp" : "等级经验值",
+               "shop|points" : "积分管理",
+               "shop|sns_malbum" : "会员相册",
+               "shop|sns_member" : "会员标签",
+               "shop|chat_log" : "聊天记录",
+               "shop|predeposit" : "预存款"
+            }
+         }
+      ]
+   },
+   "sns" : {
+      "name" : "SNS",
+      "child" : [
+         {
+            "name" : "设置",
+            "child" : {
+               "shop|sns_sharesetting" : "站外分享设置"
+            }
+         },
+         {
+            "name" : "圈子",
+            "child" : {
+               "circle|circle_setting" : "圈子设置",
+               "circle|circle_manage" : "圈子管理",
+               "circle|circle_class" : "分类管理",
+               "circle|circle_theme" : "话题管理",
+               "circle|circle_inform" : "举报管理",
+               "circle|circle_adv" : "首页设置",
+               "circle|circle_member" : "成员管理",
+               "circle|circle_memberlevel" : "成员头衔"
+            }
+         },
+         {
+            "name" : "微商城",
+            "child" : {
+               "microshop|manage" : "微商城设置",
+               "microshop|comment" : "评论",
+               "microshop|adv" : "广告"
+            }
+         },
+         {
+            "name" : "随心看",
+            "child" : {
+               "microshop|goods_class" : "分类管理",
+               "microshop|goods" : "内容维护"
+            }
+         },
+         {
+            "name" : "个人秀",
+            "child" : {
+               "microshop|personal" : "内容维护",
+               "microshop|personal_class" : "分类管理"
+            }
+         },
+         {
+            "name" : "店铺街",
+            "child" : {
+               "microshop|store" : "内容维护"
+            }
+         }
+      ]
+   },
+   "report" : {
+      "name" : "报表",
+      "child" : [
+         {
+            "name" : "数据统计",
+            "child" : {
+               "shop|stat_general" : "概要",
+               "shop|stat_industry" : "行业分析",
+               "shop|stat_member" : "会员统计",
+               "shop|stat_store" : "店铺统计",
+               "shop|stat_trade" : "销量分析",
+               "shop|stat_goods" : "商品分析",
+               "shop|stat_marketing" : "营销分析",
+               "shop|stat_aftersale" : "售后分析"
+            }
+         }
+      ]
+   },
+   "system" : {
+      "name" : "系统",
+      "child" : [
+         {
+            "name" : "PC端",
+            "child" : {
+               "system|setting" : "站点设置",
+               "system|area" : "地区设置",
+               "system|upload" : "上传设置",
+               "shop|upload" : "图片设置",
+               "shop|search" : "搜索设置",
+               "shop|seo" : "SEO设置",
+               "shop|message" : "消息通知模板",
+               "shop|payment" : "PC支付",
+               "system|account" : "第三方登录",
+               "shop|express" : "快递公司",
+               "shop|express_api" : "快递接口",
+               "shop|waybill" : "运单模板",
+               "system|message" : "邮件设置",
+               "system|taobao_api" : "淘宝接口",
+               "system|admin" : "权限设置",
+               "system|admin_log" : "操作日志",
+               "system|task" : "计划任务",
+               "system|cache" : "清理缓存",
+               "system|db" : "数据库管理"
+            }
+         },
+         {
+            "name" : "手机端",
+            "child" : {
+               "mobile|mb_app" : "应用安装",
+               "mobile|mb_payment" : "手机支付",
+               "mobile|mb_wx" : "微信二维码",
+               "mobile|mb_connect" : "第三方登录",
+               "mobile|wxapp" : "微信小程序"
+            }
+         }
+      ]
+   }
+}

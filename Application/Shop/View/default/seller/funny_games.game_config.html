@@ -1,0 +1,178 @@
+<?php defined('IN_SHOPDA') || exit;?>
+<include file="common/global_vars"/>
+
+<div class="tabmenu">
+  <include file="layout/submenu"/>
+  <a title="返回列表" class="dabtn spdbtn-aqua" href="<?php echo urlShop("FunnyGames", "index");?>">返回列表</a>
+</div>
+<div class="spdsc-form-default">
+
+
+  <form method="post"  action="<?php echo $_PAGE_URL; ?>&c=FunnyGames&a=game_config" 
+   enctype="multipart/form-data" id="game_config_form">
+    <input type="hidden" name="form_submit" value="ok" />
+    
+    <input type="hidden" name="game_key" value="<?php echo $game_info['game_key']; ?>" />
+    <input type="hidden" name="shopda_form_fields_str" value="<?php echo $shopda_form_fields_str; ?>" />
+    
+    
+    <?php 
+    	echo $current_conf_list_str;
+    ?>
+ 
+    
+    <div class="bottom" style="z-index:5000">
+       
+        <label class="submit-border"><input type="submit" class="submit" value="提交" /></label>
+    </div>
+  </form>
+</div>
+
+<script type="text/javascript" src="<?php echo RESOURCE_SITE_URL;?>/js/common.js"></script>
+<script type="text/javascript" src="<?php echo RESOURCE_SITE_URL;?>/js/ajaxfileupload/ajaxfileupload.js"></script>
+<link href="<?php echo RESOURCE_SITE_URL;?>/js/jquery.nyroModal/styles/nyroModal.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="<?php echo RESOURCE_SITE_URL;?>/js/jquery.nyroModal/custom.min.js"></script> 
+
+<style>
+
+.color-selector-if-div {
+	width:320px;
+	height:260px;
+	position:absolute;
+	top:-300px;
+	left:-300px;
+	z-index:1000;
+}
+.color-selector-if-div .color-picker-iframe {
+	width:300px;
+	height:240px;
+	margin:0;
+	padding:0;
+}
+
+</style>
+
+<div class="color-selector-if-div">
+
+	<script type="text/javascript">
+
+	</script>
+	
+	<iframe frameborder="0" scrolling="no"  allowTransparency="true" class="color-picker-iframe" id="color-picker-iframe"  src="<?php echo BASE_SITE_URL;?>/Public/resource/common/color_selector/index.html"></iframe>
+	
+	<script type="text/javascript">
+	
+		/*颜色拾取器*/
+		function fill_color_selector_val(uniq_key, val)
+		{
+			//console.log(uniq_key, val);
+			$('input[uniq_key="' + uniq_key + '"]').val(val);
+			$(".color-selector-if-div").css({"top":"-300px", "left":"-300px"});
+		}
+		
+		$(function(){ 
+			 $('a[datype="nyroModal"]').nyroModal();
+			$('#game_config_form').validate({
+		    	submitHandler:function(form){ 
+		    		ajaxpost('game_config_form', '', '', 'onerror')
+		    	},
+				rules : {
+		        },
+		        messages : {
+		        }
+		    });
+			 
+			 $(".color-selector").click(function() {
+				 
+				 offset = $(this).offset();
+
+				 $(".color-selector-if-div").css({"top" : (offset.top - 78) + "px", "left" : (offset.left - 200) + "px"});
+				 
+				 uniq_key = $(this).attr("uniq_key");
+				 
+				 //console.log(uniq_key);
+				 
+				 document.getElementById("color-picker-iframe").contentWindow.set_color_selector_handler(uniq_key);
+				 document.getElementById("color-picker-iframe").contentWindow.trigger_color_selector();
+			 });
+			 /*颜色拾取器结束*/
+			
+			 
+			
+			 
+			//图片上传开始
+			//解决多次上传问题
+			jQuery.extend({
+			    createUploadForm: function(id, fileElementId, data)
+				{
+					//create form	
+					var formId = 'jUploadForm' + id;
+					var fileId = 'jUploadFile' + id;
+					var form = jQuery('<form  action="" method="POST" name="' + formId + '" id="' + formId + '" enctype="multipart/form-data"></form>');	
+					if(data)
+					{
+						for(var i in data)
+						{
+							jQuery('<input type="hidden" name="' + i + '" value="' + data[i] + '" />').appendTo(form);
+						}			
+					}		
+					var oldElement = jQuery('#' + fileElementId);
+					var newElement = jQuery(oldElement).clone(true); //解决多次上传问题
+					jQuery(oldElement).attr('id', fileId);
+					jQuery(oldElement).before(newElement);
+					jQuery(oldElement).appendTo(form);
+	
+					//set attributes
+					jQuery(form).css('position', 'absolute');
+					jQuery(form).css('top', '-1200px');
+					jQuery(form).css('left', '-1200px');
+					jQuery(form).appendTo('body');		
+					return form;
+			    }
+			});
+			/* 图片上传ajax */
+			function ajaxFileUpload(url, id, file_id)
+			{
+				$.ajaxFileUpload
+				(
+					{
+						url:url,
+						secureuri:false,
+						fileElementId:id,
+						dataType: 'json',
+						success: function (data, status)
+						{
+							console.log(data);
+							if(data.errno >= 0)
+							{
+								$('.' + id).attr("value", data.data);
+								$(".thumb_" + id).attr("src", data.data);
+							}
+						},
+						error: function (data, status, e)
+						{
+							console.log(e);
+						}
+					}
+				)
+				return false;
+			
+			}
+			var url = "<?php echo urlShop("Datool", "image_upload", array("ext_dir" => "funny_games," . $game_info['game_key'])) ;?>";
+		    $('.spdsc-upload-btn').find('input[type="file"]').unbind().change(
+	            function() {
+	                var id = $(this).attr('id');
+	                var file_id = $(this).attr('file_id');
+	                ajaxFileUpload(url, id, file_id);
+		    });
+			//图片上传结束
+
+		});		
+		
+		
+		
+		
+		
+	</script>
+
+</div>

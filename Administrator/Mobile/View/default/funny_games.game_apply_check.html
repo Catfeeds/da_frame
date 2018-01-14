@@ -1,0 +1,132 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+<include file="common/global_vars"/>
+
+
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title"><a class="back" href="<?php echo $_PAGE_URL; ?>&c=FunnyGames&a=game_apply_lists" title="返回审核列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+      <div class="subject">
+        <h3>申请审核 - 店铺：“<?php echo  $output['apply_detail']['store_name'] . " 申请 " .  $output['apply_detail']['game_name'];?>”</h3>
+        <h5>申请审核</h5>
+      </div>
+    </div>
+  </div>
+  
+  <form id="check_form" enctype="multipart/form-data" method="post">
+    <input type="hidden" name="form_submit" value="ok" />
+    <input type="hidden" name="apply_id" value="<?php echo $apply_detail['id'];?>" />
+    
+    <div class="spdap-form-default">
+    
+    
+      <dl class="row">
+        <dt class="tit">游戏图标</dt>
+        <dd class="opt"><div><img style="width:200px;height:200px;" src="<?php echo $apply_detail['game_icon']; ?>"></div>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+    
+      <dl class="row">
+        <dt class="tit">游戏KEY</dt>
+        <dd class="opt"><label><?php echo $apply_detail['game_key'];?></label>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+
+      <dl class="row">
+        <dt class="tit">游戏名称</dt>
+        <dd class="opt"><label><?php echo $apply_detail['game_name'];?></label>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+
+      <dl class="row">
+        <dt class="tit">游戏描述</dt>
+        <dd class="opt"><label><?php echo $apply_detail['game_desc'];?></label>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+
+      <dl class="row">
+        <dt class="tit">店铺ID</dt>
+        <dd class="opt"><label><?php echo $apply_detail['store_id'];?></label>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+
+
+      <dl class="row">
+        <dt class="tit">店铺名称</dt>
+        <dd class="opt"><label><?php echo $apply_detail['store_name'];?></label>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      
+      
+      
+      <dl class="row">
+        <dt class="tit">审核结论</dt>
+        <dd class="opt">
+         
+          <select name="check_result" id="check_result">
+ 
+			    <option value="1" <?php if ($apply_detail['check_status'] == 1) {echo " selected ";}?> >通过</option>
+            	<option value="0" <?php if ($apply_detail['check_status'] == 0) {echo " selected ";}?> >打回</option>
+   
+          </select>
+          
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      
+      <dl class="row">
+        <dt class="tit">审核结论</dt>
+        <dd class="opt"><textarea name="check_reason" class="input-txt" type="text"><?php echo empty($apply_detail['check_status_desc']) ? "审核结论" : $apply_detail['check_status_desc'];?></textarea>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      
+      <div class="bot"><a href="JavaScript:void(0);" class="spdap-btn-big spdap-btn-green" id="submitBtn"><?php echo $lang['spd_submit'];?></a></div>
+    </div>
+  </form>
+</div>
+<script>
+$(function(){ 
+	$('.nyroModal').nyroModal();
+ 
+
+//按钮先执行验证再提交表单	
+	$("#submitBtn").click(function(){ 
+    if($("#check_form").valid()){ 
+     $("#check_form").submit();
+	}
+	});
+
+	$('#check_form').validate({
+        errorPlacement: function(error, element){ 
+        	var error_td = element.parents('dl').find('span.err');
+            error_td.append(error);
+        },
+        success: function(label){ 
+            label.addClass('valid');
+        },
+        rules : {
+        	check_reason : {
+                required : true
+            },
+            check_result : {
+            	required : true
+            }
+        },
+        messages : {
+        	check_reason : {
+                required : '<i class="fa fa-exclamation-circle"></i>审核理由不可为空'
+            },
+            check_result : {
+                required : '<i class="fa fa-exclamation-circle"></i>请填写审核结果'
+            }
+        }
+});
+});	
+</script> 

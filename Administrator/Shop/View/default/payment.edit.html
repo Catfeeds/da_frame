@@ -1,0 +1,523 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+<include file="common/global_vars"/>
+
+
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title"><a class="back" href="<?php echo $_PAGE_URL; ?>&c=Payment" title="返回支付方式列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+      <div class="subject">
+        <h3><?php echo $lang['spd_pay_method'];?> - <?php echo $lang['spd_set'];?>“<?php echo $output['payment']['payment_name'];?>”</h3>
+        <h5><?php echo $lang['spd_pay_method_subhead'];?></h5>
+      </div>
+    </div>
+  </div>
+  <form id="post_form" method="post" name="form1">
+  
+
+  
+    <input type="hidden" name="form_submit" value="ok" />
+    <input type="hidden" name="payment_id" value="<?php echo $output['payment']['payment_id'];?>" />
+    <div class="spdap-form-default">
+    
+      <dl class="row">
+        <dt class="tit"><?php echo $lang['payment_index_enable'];?></dt>
+        <dd class="opt">
+          <div class="onoff">
+            <label for="payment_state1" class="cb-enable <?php if($output['payment']['payment_state'] == '1'){  ?>selected<?php } ?>" ><?php echo $lang['spd_yes'];?></label>
+            <label for="payment_state2" class="cb-disable <?php if($output['payment']['payment_state'] == '0'){  ?>selected<?php } ?>" ><?php echo $lang['spd_no'];?></label>
+            <input type="radio" <?php if($output['payment']['payment_state'] == '1'){  ?>checked="checked"<?php }?> value="1" name="payment_state" id="payment_state1">
+            <input type="radio" <?php if($output['payment']['payment_state'] == '0'){  ?>checked="checked"<?php }?> value="0" name="payment_state" id="payment_state2">
+          </div>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+    
+      <?php if ($output['payment']['payment_code'] == 'chinabank') {  ?>
+      <dl class="row">
+        <dt class="tit"><?php echo $lang['payment_chinabank_account'];?></dt>
+        <dd class="opt">
+          <input type="hidden" name="config_name" value="chinabank_account,chinabank_key" />
+          <input name="chinabank_account" id="chinabank_account" value="<?php echo $output['config_array']['chinabank_account'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit"><?php echo $lang['payment_chinabank_key'];?></dt>
+        <dd class="opt">
+          <input name="chinabank_key" id="chinabank_key" value="<?php echo $output['config_array']['chinabank_key'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      <?php } elseif ($output['payment']['payment_code'] == 'tenpay') {  ?>
+      <dl class="row">
+        <dt class="tit"><?php echo $lang['payment_tenpay_account'];?></dt>
+        <dd class="opt">
+          <input type="hidden" name="config_name" value="tenpay_account,tenpay_key" />
+          <input name="tenpay_account" id="tenpay_account" value="<?php echo $output['config_array']['tenpay_account'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit"><?php echo $lang['payment_tenpay_key'];?></dt>
+        <dd class="opt">
+          <input name="tenpay_key" id="tenpay_key" value="<?php echo $output['config_array']['tenpay_key'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      
+      <?php } elseif ($output['payment']['payment_code'] == 'alipay') {  ?>
+      <div class="row">
+        <dd class="opt">支付宝在线退款功能要在支付宝网站输入该账号的“支付密码”，管理员进行确认后才能完成退款操作。</dd>
+      </div>
+      <dl class="row">
+        <dt class="tit"><?php echo $lang['payment_alipay_account'];?></dt>
+        <dd class="opt">
+          <input type="hidden" name="config_name" value="alipay_service,alipay_account,alipay_key,alipay_partner" />
+          <input type="hidden" name="alipay_service" value="create_direct_pay_by_user" />
+          <input name="alipay_account" id="alipay_account" value="<?php echo $output['config_array']['alipay_account'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit"><?php echo $lang['payment_alipay_key'];?></dt>
+        <dd class="opt">
+          <input name="alipay_key" id="alipay_key" value="<?php echo $output['config_array']['alipay_key'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit"><?php echo $lang['payment_alipay_partner'];?></dt>
+        <dd class="opt">
+          <input name="alipay_partner" id="alipay_partner" value="<?php echo $output['config_array']['alipay_partner'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic"><a href="https://b.alipay.com/order/pidKey.htm?pid=2088001525694587&product=fastpay" target="_blank">获取PID和Key</a></p>
+        </dd>
+      </dl>
+      <?php } elseif ($output['payment']['payment_code'] == 'wxpay') {  ?>
+      <div class="row">
+        <dd class="opt">如果启用微信在线退款功能需要在服务器设置“证书”，证书文件不能放在web服务器虚拟目录，应放在有访问权限控制的目录中，防止被他人下载。</dd>
+        <dd class="opt">证书路径在“Api\payment\shop\wxpay\lib\WxPay.Config.php”中。退款有一定延时，用零钱支付的20分钟内到账，银行卡支付的至少3个工作日。</dd>
+      </div>
+      <dl class="row">
+        <dt class="tit">商户公众号APPID</dt>
+        <dd class="opt">
+          <input type="hidden" name="config_name" value="appid,mchid,key" />
+          <input name="appid" id="appid" value="<?php echo $output['config_array']['appid'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic">绑定支付的APPID（必须配置，开户邮件中可查看）</p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit">商户号</dt>
+        <dd class="opt">
+          <input name="mchid" id="mchid" value="<?php echo $output['config_array']['mchid'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic">商户号（必须配置，开户邮件中可查看）</p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit">密钥</dt>
+        <dd class="opt">
+          <input name="key" id="key" value="<?php echo $output['config_array']['key'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic">商户支付密钥，参考开户邮件设置（必须配置，登录商户平台自行设置）</p>
+        </dd>
+      </dl>
+      
+
+     <?php } elseif ($output['payment']['payment_code'] == 'paypalpay') {  ?>
+      <div class="row">
+        <dd class="opt">Paypal 支付</dd>
+      </div>
+      <dl class="row">
+        <dt class="tit">Paypal client_id</dt>
+        <dd class="opt">
+          <input type="hidden" name="config_name" value="client_id,client_secret,exchange_rate,currency_code" />
+
+          
+          <input name="client_id" id="client_id" value="<?php echo $output['config_array']['client_id'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      
+      <dl class="row">
+        <dt class="tit">Paypal client secret</dt>
+        <dd class="opt">
+          <input name="client_secret" id="client_secret" value="<?php echo $output['config_array']['client_secret'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      
+      <dl class="row">
+        <dt class="tit">汇率设置</dt>
+        <dd class="opt">
+          <input name="exchange_rate" id="exchange_rate" value="<?php echo $output['config_array']['exchange_rate'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic">
+          </p>
+        </dd>
+      </dl>
+      
+      
+      <dl class="row">
+        <dt class="tit">币种设置</dt>
+        <dd class="opt">
+          
+          
+          <?php
+          $cny_list = array(
+'AUD' => '澳元（A $）',
+'CAD' => '加元（C $）',
+'EUR' => '欧元（€）',	
+'GBP' => '英镑（£）',	
+'JPY' => '日元（¥）',
+'USD' => '美元（$）',	
+'NZD' => '新西兰元($)',	
+'CHF' => '瑞士法郎',	
+'HKD' => '港币($)',	
+'SGD' => '新加坡元($)',	
+'SEK' => '瑞典克朗	',
+'DKK' => '丹麦克朗	',
+'PLN' => '波兰兹罗提',	
+'NOK' => '挪威克朗	',
+'HUF' => '匈牙利福林	',
+'CZK' => '捷克克朗	',
+'ILS' => '以色列新谢克尔	',
+'MXN' => '墨西哥比索	',
+'BRL' => '巴西雷亚尔（仅适用于巴西用户）',	
+'MYR' => '马来西亚林吉特（仅适用于马来西亚用户）',	
+'PHP' => '菲律宾比索',	
+'TWD' => '新台币',	
+'THB' => '泰铢	',
+'TRY' => '土耳其里拉（仅适用于土耳其用户）',	
+'INR' => '印度卢比（仅适用于印度用户）',	
+'RUB' => '俄罗斯卢布',);
+          ?>
+          
+          
+                    
+          <select id="currency_code_sel" class="s-select">
+                <?php foreach ((array)  $cny_list as $k => $v) {  ?>
+                <option <?php if ($output['config_array']['currency_code'] == $k) {echo " selected ";} ;?> value="<?php echo (string) $k; ?>">
+                    <?php echo $k . "-" . $v; ?>
+                </option>
+                <?php } ?>
+          </select>
+          
+          
+          <input name="currency_code" id="currency_code" value="<?php echo $output['config_array']['currency_code'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic">
+          </p>
+        </dd>
+      </dl>
+      
+      
+      
+      <?php } elseif ($output['payment']['payment_code'] == 'wxpay') {  ?>
+      <div class="row">
+        <dd class="opt">如果启用微信在线退款功能需要在服务器设置“证书”，证书文件不能放在web服务器虚拟目录，应放在有访问权限控制的目录中，防止被他人下载。</dd>
+        <dd class="opt">证书路径在“Api\payment\shop\wxpay\lib\WxPay.Config.php”中。退款有一定延时，用零钱支付的20分钟内到账，银行卡支付的至少3个工作日。</dd>
+      </div>
+      <dl class="row">
+        <dt class="tit">商户公众号APPID</dt>
+        <dd class="opt">
+          <input type="hidden" name="config_name" value="appid,mchid,key" />
+          <input name="appid" id="appid" value="<?php echo $output['config_array']['appid'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic">绑定支付的APPID（必须配置，开户邮件中可查看）</p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit">商户号</dt>
+        <dd class="opt">
+          <input name="mchid" id="mchid" value="<?php echo $output['config_array']['mchid'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic">商户号（必须配置，开户邮件中可查看）</p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit">密钥</dt>
+        <dd class="opt">
+          <input name="key" id="key" value="<?php echo $output['config_array']['key'];?>" class="input-txt" type="text">
+          <span class="err"></span>
+          <p class="notic">商户支付密钥，参考开户邮件设置（必须配置，登录商户平台自行设置）</p>
+        </dd>
+      </dl>
+      
+      
+      
+      
+      
+    <?php } elseif ($output['payment']['payment_code'] == 'pingxxpay') {  ?>
+      
+      <div class="row">
+     
+      </div>
+      
+      
+      <dl class="row">
+        <dt class="tit">app_id</dt>
+        <dd class="opt">
+          <input type="hidden" name="config_name" value="app_id,secret_key,pingxx_public_key,merchant_public_key,alipay_pc_direct_state,upacp_pc_state,cp_b2b_state,isv_wap_state,merchant_private_key" />
+          <textarea name="app_id" id="app_id" class="input-txt" type="text"><?php echo $output['config_array']['app_id'];?></textarea>
+          <span class="err"></span>
+          <p class="notic">app_id（app_id，PING++后台可查看）</p>
+        </dd>
+      </dl>
+      
+      <dl class="row">
+        <dt class="tit">Secret Key</dt>
+        <dd class="opt">
+          <textarea name="secret_key" id="secret_key" class="input-txt" type="text"><?php echo $output['config_array']['secret_key'];?></textarea>
+          <span class="err"></span>
+          <p class="notic">Live Secret Key（Server端真实交易秘钥，必须配置，测试阶段配置Test Secret Key，上线后配置Live Secret Key，PING++后台可查看）</p>
+        </dd>
+      </dl>
+      
+      <dl class="row">
+        <dt class="tit">PING++公钥</dt>
+        <dd class="opt">
+          <textarea name="pingxx_public_key" id="pingxx_public_key" class="input-txt" type="text"><?php echo $output['config_array']['pingxx_public_key'];?></textarea>
+          <span class="err"></span>
+          <p class="notic">PING++公钥<（必须配置，PING++后台可查看）</p>
+        </dd>
+      </dl>
+      
+      <dl class="row">
+        <dt class="tit">商户公钥</dt>
+        <dd class="opt">
+          <textarea name="merchant_public_key" id="merchant_public_key"class="input-txt" type="text"><?php echo $output['config_array']['merchant_public_key'];?></textarea>
+          <span class="err"></span>
+          <p class="notic">商户公钥（用于商户身份验证）</p>
+        </dd>
+      </dl>
+      
+      <dl class="row">
+        <dt class="tit">商户私钥</dt>
+        <dd class="opt">
+          <textarea name="merchant_private_key" id="merchant_private_key"class="input-txt" type="text"><?php echo $output['config_array']['merchant_private_key'];?></textarea>
+          <span class="err"></span>
+          <p class="notic">商户签名私钥（用于调起SDK签名）</p>
+        </dd>
+      </dl>
+      
+      <dl class="row">
+        <dt class="tit">支付宝</dt>
+        <dd class="opt">
+          <div class="onoff">
+            <label for="alipay_pc_direct_state1" class="cb-enable <?php if($output['config_array']['alipay_pc_direct_state'] == '1'){  ?>selected<?php } ?>" ><?php echo $lang['spd_yes'];?></label>
+            <label for="alipay_pc_direct_state2" class="cb-disable <?php if($output['config_array']['alipay_pc_direct_state'] == '0'){  ?>selected<?php } ?>" ><?php echo $lang['spd_no'];?></label>
+            <input type="radio" <?php if($output['config_array']['alipay_pc_direct_state'] == '1'){  ?>checked="checked"<?php }?> value="1" name="alipay_pc_direct_state" id="alipay_pc_direct_state1">
+            <input type="radio" <?php if($output['config_array']['alipay_pc_direct_state'] == '0'){  ?>checked="checked"<?php }?> value="0" name="alipay_pc_direct_state" id="alipay_pc_direct_state2">
+          </div>
+          <p class="notic"></p>
+        </dd>
+
+        <dt class="tit">银联网关</dt>
+        <dd class="opt">
+          <div class="onoff">
+            <label for="upacp_pc_state1" class="cb-enable <?php if($output['config_array']['upacp_pc_state'] == '1'){  ?>selected<?php } ?>" ><?php echo $lang['spd_yes'];?></label>
+            <label for="upacp_pc_state2" class="cb-disable <?php if($output['config_array']['upacp_pc_state'] == '0'){  ?>selected<?php } ?>" ><?php echo $lang['spd_no'];?></label>
+            <input type="radio" <?php if($output['config_array']['upacp_pc_state'] == '1'){  ?>checked="checked"<?php }?> value="1" name="upacp_pc_state" id="upacp_pc_state1">
+            <input type="radio" <?php if($output['config_array']['upacp_pc_state'] == '0'){  ?>checked="checked"<?php }?> value="0" name="upacp_pc_state" id="upacp_pc_state2">
+          </div>
+          <p class="notic"></p>
+        </dd>
+
+        <dt class="tit">银联企业网银</dt>
+        <dd class="opt">
+          <div class="onoff">
+            <label for="cp_b2b_state1" class="cb-enable <?php if($output['config_array']['cp_b2b_state'] == '1'){  ?>selected<?php } ?>" ><?php echo $lang['spd_yes'];?></label>
+            <label for="cp_b2b_state2" class="cb-disable <?php if($output['config_array']['cp_b2b_state'] == '0'){  ?>selected<?php } ?>" ><?php echo $lang['spd_no'];?></label>
+            <input type="radio" <?php if($output['config_array']['cp_b2b_state'] == '1'){  ?>checked="checked"<?php }?> value="1" name="cp_b2b_state" id="cp_b2b_state1">
+            <input type="radio" <?php if($output['config_array']['cp_b2b_state'] == '0'){  ?>checked="checked"<?php }?> value="0" name="cp_b2b_state" id="cp_b2b_state2">
+          </div>
+          <p class="notic"></p>
+        </dd>
+        
+       <dt class="tit">线下扫码支付</dt>
+        <dd class="opt">
+          <div class="onoff">
+            <label for="isv_wap_state1" class="cb-enable <?php if($output['config_array']['isv_wap_state'] == '1'){  ?>selected<?php } ?>" ><?php echo $lang['spd_yes'];?></label>
+            <label for="isv_wap_state2" class="cb-disable <?php if($output['config_array']['isv_wap_state'] == '0'){  ?>selected<?php } ?>" ><?php echo $lang['spd_no'];?></label>
+            <input type="radio" <?php if($output['config_array']['isv_wap_state'] == '1'){  ?>checked="checked"<?php }?> value="1" name="isv_wap_state" id="isv_wap_state1">
+            <input type="radio" <?php if($output['config_array']['isv_wap_state'] == '0'){  ?>checked="checked"<?php }?> value="0" name="isv_wap_state" id="isv_wap_state2">
+          </div>
+          <p class="notic"></p>
+        </dd>
+        
+      </dl>    
+          
+      
+      <?php } ?>
+      
+
+      
+      <div class="bot"><a href="JavaScript:void(0);" class="spdap-btn-big spdap-btn-green" id="submitBtn"><?php echo $lang['spd_submit'];?></a></div>
+    </div>
+  </form>
+</div>
+
+<script>
+$(document).ready(function(){ 
+	$('#post_form').validate({
+		
+        errorPlacement: function(error, element){ 
+			var error_td = element.parent('dd').children('span.err');
+            error_td.append(error);
+        },
+        
+		<?php if($output['payment']['payment_code'] == 'chinabank') {  ?>
+        rules : {
+            chinabank_account : {
+                required   : true
+            },
+            chinabank_key : {
+                required   : true
+            }
+        },
+        messages : {
+            chinabank_account  : {
+                required : '<i class="fa fa-exclamation-circle"></i><?php echo $lang['payment_chinabank_account'];?><?php echo $lang['payment_edit_not_null']; ?>'
+            },
+            chinabank_key  : {
+                required : '<i class="fa fa-exclamation-circle"></i><?php echo $lang['payment_chinabank_key'];?><?php echo $lang['payment_edit_not_null']; ?>'
+            }
+        }
+		<?php } elseif ($output['payment']['payment_code'] == 'tenpay') {  ?>
+        rules : {
+            tenpay_account : {
+                required   : true
+            },
+            tenpay_key : {
+                required   : true
+            }
+        },
+        messages : {
+            tenpay_account  : {
+                required : '<i class="fa fa-exclamation-circle"></i><?php echo $lang['payment_tenpay_account'];?><?php echo $lang['payment_edit_not_null']; ?>'
+            },
+            tenpay_key  : {
+                required : '<i class="fa fa-exclamation-circle"></i><?php echo $lang['payment_tenpay_key'];?><?php echo $lang['payment_edit_not_null']; ?>'
+            }
+        }
+			
+		<?php } elseif ($output['payment']['payment_code'] == 'alipay') {  ?>
+        rules : {
+            alipay_account : {
+                required   : true
+            },
+            alipay_key : {
+                required   : true
+            },
+            alipay_partner : {
+                required   : true
+            }
+        },
+        messages : {
+            alipay_account  : {
+                required : '<i class="fa fa-exclamation-circle"></i><?php echo $lang['payment_alipay_account'];?><?php echo $lang['payment_edit_not_null']; ?>'
+            },
+            alipay_key  : {
+                required : '<i class="fa fa-exclamation-circle"></i><?php echo $lang['payment_alipay_key'];?><?php echo $lang['payment_edit_not_null']; ?>'
+            },
+            alipay_partner  : {
+                required : '<i class="fa fa-exclamation-circle"></i><?php echo $lang['payment_alipay_partner'];?><?php echo $lang['payment_edit_not_null']; ?>'
+            }
+        }
+        
+        <?php } elseif ($output['payment']['payment_code'] == 'pingxxpay') {  ?>
+ 
+        rules : {
+        	app_id : {
+                required   : true
+            },
+        	secret_key : {
+                required   : true
+            },
+            pingxx_public_key : {
+                required   : true
+            },
+            merchant_public_key : {
+                required   : true
+            },
+            merchant_private_key : {
+                required   : true
+            }
+        },
+        messages : {
+        	
+        	app_id  : {
+                required : '<i class="fa fa-exclamation-circle"></i>app_id不能为空'
+            },
+        	secret_key  : {
+                required : '<i class="fa fa-exclamation-circle"></i>secret_key不能为空'
+            },
+            pingxx_public_key  : {
+                required : '<i class="fa fa-exclamation-circle"></i>pingxx_public_key不能为空'
+            },
+            merchant_public_key  : {
+                required : '<i class="fa fa-exclamation-circle"></i>merchant_public_key不能为空'
+            },
+            merchant_private_key  : {
+                required : '<i class="fa fa-exclamation-circle"></i>merchant_private_key不能为空'
+            }
+        }
+        
+        
+        <?php } elseif ($output['payment']['payment_code'] == 'paypalpay') {  ?>
+        
+        rules : {
+        	currency_code : {
+                required   : true
+            },
+            client_id : {
+                required   : true
+            },
+            client_secret : {
+                required   : true
+            },
+            exchange_rate : {
+                required   : true
+            }
+        },
+        messages : {
+        	
+        	currency_code  : {
+                required : '<i class="fa fa-exclamation-circle"></i>currency_code不能为空'
+            },
+            client_id  : {
+                required : '<i class="fa fa-exclamation-circle"></i>client_id不能为空'
+            },
+            client_secret  : {
+                required : '<i class="fa fa-exclamation-circle"></i>client_secret不能为空'
+            },
+            exchange_rate  : {
+                required : '<i class="fa fa-exclamation-circle"></i>exchange_rate不能为空'
+            }
+        }
+        
+        
+        
+		<?php } ?>
+    });
+	
+    $('#submitBtn').on('click', function() { 
+        $('#post_form').submit();
+    });
+    
+    $("#currency_code_sel").change(function() {
+    	$("#currency_code").val($(this).val());
+    });
+});
+</script>

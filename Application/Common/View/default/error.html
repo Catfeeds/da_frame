@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>出错了</title>
+<style type="text/css">
+body {
+	font-family: "Verdana";
+	padding: 0;
+	margin: 0;
+}
+
+h2 {
+	font-size: 12px;
+	line-height: 30px;
+	border-bottom: 1px dashed #CCC;
+	padding-bottom: 8px;
+	width: 800px;
+	margin: 20px 0 0 150px;
+}
+
+dl {
+	float: left;
+	display: inline;
+	clear: both;
+	padding: 0;
+	margin: 10px 20px 20px 150px;
+}
+
+dt {
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 40px;
+	color: #333;
+	padding: 0;
+	margin: 0;
+	border-width: 0px;
+}
+
+dd {
+	font-size: 12px;
+	line-height: 40px;
+	color: #333;
+	padding: 0px;
+	margin: 0;
+}
+dd .title {
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 40px;
+	color: #333;
+	padding: 0;
+	margin: 0;
+	border-width: 0px;
+}
+</style>
+</head>
+<body>
+	<h2>系统出错了</h2>
+	<dl>
+		<dd><span class="title">错误文件：</span><?php echo $e['file'] ;?></dd>
+		<dt>
+			<p/>
+		</dt>
+		
+		<dd><span class="title">错误位置：</span><?php echo $e['line'] ;?></dd>
+		<dd><span class="title">错误信息：</span><?php echo $e['message'] ;?></dd>
+		<dd><span class="title">TRACE信息：</span><p/>
+		    <?php 
+		    	$trace = $e['trace'];
+				$trace_arr = explode("\n", $trace);
+				$trace_info = implode("<br/>", $trace_arr);
+				echo $trace_info;
+			?>
+		</dd>
+	</dl>
+</body>
+</html>

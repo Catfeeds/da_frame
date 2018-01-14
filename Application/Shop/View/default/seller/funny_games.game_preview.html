@@ -1,0 +1,76 @@
+<?php defined('IN_SHOPDA') || exit;?>
+<include file="common/global_vars"/>
+
+
+<style>
+.game {
+float:left;
+min-width:600px;
+min-height:800px;
+/*
+width:600px;
+height:800px;   
+*/
+margin-top:10px;
+margin-bottom:200px;
+
+
+margin-left:20px;
+}
+.game-preview-iframe {
+
+ frameborder : 0;
+ scrolling:no; 
+background-color:white;
+allowtransparency:true;
+border:2px solid #ff9000;
+}
+.qr-code {
+margin-top:10px;
+float:right;
+width:280px;
+height:280px;
+margin-right:20px;
+}
+
+.qr-code  img {
+width:200px;
+height:200px;
+}
+</style>
+
+<div class="tabmenu">
+  <include file="layout/submenu" /> 
+  <a title="返回列表" class="dabtn spdbtn-aqua" href="<?php echo urlShop("FunnyGames", "index");?>">返回列表</a>
+</div>
+ 
+  <div class="game">
+      <iframe   src="<?php echo $game_url ;?>"  
+      frameborder="0" scrolling="no"  allowTransparency="true" class="game-preview-iframe" 
+      id="game-preview-iframe"
+      onLoad="iframe_auto_resize()"
+      ></iframe>
+  </div>
+  
+ 
+<script type="text/javascript">
+function iframe_auto_resize() {   
+	var ifm= document.getElementById("game-preview-iframe");   
+	var subWeb = document.frames ? document.frames["game-preview-iframe"].document : ifm.contentDocument;   
+	if((ifm != null && subWeb != null) && (subWeb.body.scrollHeight > 320)) {
+	   ifm.height = subWeb.body.scrollHeight;
+	   ifm.width = subWeb.body.scrollWidth;
+	} else {
+		ifm.height="800px";
+		ifm.width="600px";
+	}
+}   
+</script>
+  
+<div class="qr-code">
+  <img src="<?php echo urlShop('Daqr', 'gen_qr_code', array('url_content' => $game_url));?>" />
+</div>
+  
+
+<script src="<?php echo RESOURCE_SITE_URL;?>/js/jquery.poshytip.min.js"></script> 
+ 

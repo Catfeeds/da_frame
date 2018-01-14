@@ -1,0 +1,145 @@
+{
+   "platform" : {
+      "name" : "平台",
+      "child" : [
+         {
+            "name" : "商品",
+            "child" : {
+               "shop|store_goods_add|index" : "商品发布",
+               "shop|taobao_import|index" : "淘宝CSV导入",
+               "shop|store_goods_online|index" : "出售中",
+               "shop|store_goods_offline|index" : "仓库中",
+               "shop|store_appoint|index" : "预约/到货通知",
+               "shop|store_plate|index" : "关联版式",
+               "shop|store_spec|index" : "商品规格",
+               "shop|store_album|album_cate" : "图片空间"
+            }
+         },
+         {
+            "name" : "订单",
+            "child" : {
+               "shop|store_order|index" : "实物订单",
+               "shop|store_vr_order|index" : "虚拟兑码订单",
+               "shop|order_call|index" : "订单提醒",
+               "shop|store_evaluate|lists" : "评价管理",
+               "shop|store_refund|index" : "退款记录",
+               "shop|store_return|index" : "退货记录"
+            }
+         },
+         {
+            "name" : "店铺",
+            "child" : {
+               "shop|store_setting|store_setting" : "店铺设置",
+               "shop|store_decoration|decoration_setting" : "店铺装修",
+               "shop|store_navigation|navigation_list" : "店铺导航",
+               "shop|store_sns|index" : "店铺动态",
+               "shop|store_info|bind_class" : "店铺信息",
+               "shop|store_goods_class|index" : "店铺分类",
+               "shop|store_brand|brand_list" : "品牌申请",
+               "shop|store_supplier|sup_list" : "供货商",
+               "shop|store_map|index" : "实体店铺"
+            }
+         },
+         {
+            "name" : "物流",
+            "child" : {
+               "shop|store_deliver|index" : "发货",
+               "shop|store_deliver_set|daddress_list" : "发货设置",
+               "shop|store_waybill|waybill_manage" : "运单模板",
+               "shop|store_transport|index" : "物流工具"
+            }
+         }
+      ]
+   },
+   "sale" : {
+      "name" : "销售",
+      "child" : [
+         {
+            "name" : "抢购",
+            "child" : {
+               "shop|store_groupbuy|index" : "抢购管理",
+               "shop|store_promotion_xianshi|xianshi_list" : "限时折扣",
+               "shop|store_promotion_bundling|bundling_list" : "优惠套装",
+               "shop|store_promotion_book|index" : "预售商品",
+               "shop|store_promotion_combo|index" : "推荐组合",
+               "shop|store_promotion_cou|cou_list" : "加价购",
+               "shop|store_promotion_mansong|mansong_list" : "满即送",
+               "shop|store_promotion_booth|booth_goods_list" : "推荐展位",
+               "shop|store_promotion_sole|index" : "手机专享",
+               "shop|store_activity|store_activity" : "活动管理"
+            }
+         },
+         {
+            "name" : "券码",
+            "child" : {
+               "shop|store_voucher|templatelist" : "代金券管理",
+               "shop|store_promotion_fcode|index" : "F码商品"
+            }
+         }
+      ]
+   },
+   "operate" : {
+      "name" : "运营",
+      "child" : [
+         {
+            "name" : "PC端",
+            "child" : {
+               "shop|store_contract|index" : "消费者保障服务",
+               "shop|store_consult|consult_list" : "咨询管理",
+               "shop|store_complain|lists" : "投诉管理",
+               "shop|funny_games|index" : "游戏运营"
+            }
+         },
+         {
+            "name" : "微信",
+            "child" : {
+               "shop|seller_wechat|index" : "微信接口管理",
+               "shop|seller_wechat_follow|follow_index" : "关注自动回复",
+               "shop|seller_wechat_keyword|keyword_index" : "关键词自动回复",
+               "shop|seller_wechat_message|message_index" : "消息自动回复",
+               "shop|seller_wechat_menu|index" : "自定义菜单"
+            }
+         },
+         {
+            "name" : "客服",
+            "child" : {
+               "shop|store_callcenter|index" : "客服设置",
+               "shop|store_msg|index" : "系统消息",
+               "shop|store_im|index" : "聊天记录查询"
+            }
+         }
+      ]
+   },
+   "report" : {
+      "name" : "报表",
+      "child" : [
+         {
+            "name" : "数据统计",
+            "child" : {
+               "shop|statistics_general|general" : "店铺概况",
+               "shop|statistics_goods|goodslist" : "商品分析",
+               "shop|statistics_sale|sale" : "运营报告",
+               "shop|statistics_industry|hot" : "行业分析",
+               "shop|statistics_flow|storeflow" : "流量统计",
+               "shop|store_bill|index" : "实物结算",
+               "shop|store_vr_bill|index" : "虚拟结算"
+            }
+         }
+      ]
+   },
+   "system" : {
+      "name" : "系统",
+      "child" : [
+         {
+            "name" : "设置",
+            "child" : {
+               "shop|store_account|account_list" : "账号列表",
+               "shop|store_account_group|group_list" : "账号组",
+               "shop|seller_log|log_list" : "账号日志",
+               "shop|store_cost|cost_list" : "店铺消费",
+               "shop|store_chain|index" : "门店账号"
+            }
+         }
+      ]
+   }
+}

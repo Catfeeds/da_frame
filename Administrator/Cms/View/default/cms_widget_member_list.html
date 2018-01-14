@@ -1,0 +1,31 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+<include file="common/global_vars"/>
+
+<?php if(!empty($output['member_list']) && is_array($output['member_list'])){  ?>
+<div class="spdmember-select-box">
+    <div class="arrow"></div>
+    <ul id="member_search_list" class="spdmember-search-list">
+        <?php foreach($output['member_list'] as $value){  ?>
+        <li>
+        <dl class="spdmember-info">
+            <dt class="spdmember-name">
+            <a href="<?php echo SHOP_SITE_URL;?>&c=MemberSnshome&mid=<?php echo $value['member_id'];?>" target="_blank">
+                <?php echo $value['member_name'];?>
+            </a>
+            </dt>
+            <dd class="spdmember-avatar">
+            <a href="<?php echo SHOP_SITE_URL;?>&c=MemberSnshome&mid=<?php echo $value['member_id'];?>" target="_blank">
+                <img src="<?php echo getMemberAvatar($value['member_avatar']);?>" />
+            </a>
+            </dd>
+            <dd datype="btn_member_select" class="handle-button" title="<?php echo $lang['cms_text_add'];?>"></dd>
+        </dl>
+        </li>
+        <?php } ?>
+    </ul>
+    <div class="pagination"><?php echo $output['show_page'];?></div>
+</div>
+<?php }else { ?>
+<div class="no-record"><?php echo $lang['no_record'];?></div>
+<?php } ?>

@@ -1,0 +1,20 @@
+<?php defined('IN_SHOPDA') || exit;?>
+<include file="common/global_vars"/>
+
+
+<?php if(!empty($output['goods_list']) && is_array($output['goods_list'])){ ?>
+<ul class="spdgoods-list" style="width:760px;">
+<?php foreach($output['goods_list'] as $key=>$val){ ?>
+<li><div class="spdgoods-thumb">
+    <?php $goods_url = urlShop('goods', 'index', array('goods_id' => $val['goods_id']));?>
+    <?php $goods_image_url = thumb($val, 240);?><img src="<?php echo $goods_image_url;?>"/></div>
+<dl class="spdgoods-info"><dt><a href="<?php echo $goods_url;?>" target="_blank"><?php echo $val['goods_name'];?></a>
+</dt><dd>销售价：<?php echo $lang['currency'].daPriceFormat($val['goods_price']);?></dl>
+<a datype="btn_add_mansong_goods" data-spdgoods-id="<?php echo $val['goods_id'];?>" data-spdgoods-name="<?php echo $val['goods_name'];?>" data-spdgoods-image-url="<?php echo $goods_image_url;?>" data-spdgoods-url="<?php echo $goods_url;?>" href="javascript:void(0);" class="spdbtn-mini spdbtn-mint"><i class="icon-ok-circle "></i>选择为礼品</a>
+</li>
+<?php } ?>
+</ul>
+<div class="pagination"><?php echo $output['show_page']; ?></div>
+<?php } else { ?>
+<div><?php echo $lang['no_record'];?></div>
+<?php } ?>

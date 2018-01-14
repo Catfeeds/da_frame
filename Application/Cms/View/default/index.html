@@ -1,0 +1,11 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+<include file="common/global_vars"/>
+
+<div id="cms_index_content" class="cms-content">
+<?php 
+$file = UPLOAD_SITE_URL.DS.ATTACH_CMS.DS.'index_html'.DS.'index.html';
+$indexl_file = file_get_contents($file);
+echo $indexl_file;
+?>
+</div>

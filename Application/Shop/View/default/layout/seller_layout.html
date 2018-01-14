@@ -1,0 +1,290 @@
+<?php defined('IN_SHOPDA') || exit;?>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>商家中心</title>
+<link href="<?php echo SHOP_TEMPLATES_URL?>/css/base.css" rel="stylesheet" type="text/css">
+<link href="<?php echo SHOP_TEMPLATES_URL?>/css/seller_center.css" rel="stylesheet" type="text/css">
+<link href="<?php echo SHOP_RESOURCE_SITE_URL;?>/font/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link href="<?php echo SHOP_RESOURCE_SITE_URL;?>/font_v2/css/font-awesome.min.css" rel="stylesheet" />
+
+<include file="common/global_vars"/>
+<!--[if IE 7]>
+  <link rel="stylesheet" href="<?php echo SHOP_RESOURCE_SITE_URL;?>/font/font-awesome/css/font-awesome-ie7.min.css">
+<![endif]-->
+
+<script>
+var COOKIE_PREFIX = '<?php echo COOKIE_PREFIX;?>';var _CHARSET = '<?php echo strtolower(CHARSET);?>';var SITEURL = '<?php echo SHOP_SITE_URL;?>';var MEMBER_SITE_URL = '<?php echo MEMBER_SITE_URL;?>';var RESOURCE_SITE_URL = '<?php echo RESOURCE_SITE_URL;?>';var SHOP_RESOURCE_SITE_URL = '<?php echo SHOP_RESOURCE_SITE_URL;?>';var SHOP_TEMPLATES_URL = '<?php echo SHOP_TEMPLATES_URL;?>';</script>
+<script type="text/javascript" src="<?php echo RESOURCE_SITE_URL;?>/js/jquery.js"></script>
+<script type="text/javascript" src="<?php echo SHOP_RESOURCE_SITE_URL;?>/js/seller.js"></script>
+<script type="text/javascript" src="<?php echo RESOURCE_SITE_URL;?>/js/waypoints.js"></script>
+<script type="text/javascript" src="<?php echo RESOURCE_SITE_URL;?>/js/jquery-ui/jquery.ui.js"></script>
+<script type="text/javascript" src="<?php echo RESOURCE_SITE_URL;?>/js/jquery.validation.min.js"></script>
+<script type="text/javascript" src="<?php echo RESOURCE_SITE_URL;?>/js/common.js"></script>
+<script type="text/javascript" src="<?php echo RESOURCE_SITE_URL;?>/js/member.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo RESOURCE_SITE_URL;?>/js/dialog/dialog.js" id="dialog_js" charset="utf-8"></script>
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="<?php echo RESOURCE_SITE_URL;?>/js/html5shiv.js"></script>
+      <script src="<?php echo RESOURCE_SITE_URL;?>/js/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<script type="text/javascript" src="<?php echo RESOURCE_SITE_URL;?>/js/ToolTip.js"></script>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<?php if (!empty($output['store_closed'])) {  ?>
+<div class="store-closed"><i class="icon-warning-sign"></i>
+  <dl>
+    <dt>您的店铺已被平台关闭</dt>
+    <dd>关闭原因：<?php echo $output['store_close_info'];?></dd>
+    <dd>在此期间，您的店铺以及商品将无法访问；如果您有异议或申诉请及时联系平台管理。</dd>
+  </dl>
+</div>
+<?php } ?>
+<header class="spdsc-head-layout w">
+  <div class="wrapper">
+    <div class="spdsc-admin">
+      <dl class="spdsc-admin-info">
+        <dt class="admin-avatar"><img src="<?php echo getMemberAvatarForID($_SESSION['member_id']);?>" width="32" class="pngFix" alt=""/></dt>
+        <dd class="admin-permission">当前用户</dd>
+        <dd class="admin-name"><?php echo $_SESSION['seller_name'];?></dd>
+      </dl>
+      <div class="spdsc-admin-function">
+	  
+		<a href="javascript:void(0);" title="查看全部菜单">
+		    <i class="icon-sitemap"></i>
+		</a>
+	  
+		<a href="<?php echo urlShop('show_store', 'index', array('store_id'=>$_SESSION['store_id']), $output['store_info']['store_domain']);?>" title="前往店铺" >
+			<i class="icon-home"></i>
+		</a>
+			
+		<a href="<?php echo urlMember('member_security', 'auth',array('type'=>'modify_pwd'));?>" title="修改密码" target="_blank">
+			<i class="icon-wrench"></i>
+		</a>
+			
+		<a href="<?php echo urlShop('seller_logout', 'logout');?>" title="安全退出">
+			<i class="icon-signout"></i>
+		</a>
+	  </div>
+    
+	</div>
+    <div class="center-logo"> <a href="<?php echo SHOP_SITE_URL;?>" target="_blank">
+		<img src="<?php echo UPLOAD_SITE_URL.'/'.ATTACH_COMMON.DS. 'seller-center' . DS .C('seller_center_logo');?>" class="pngFix" alt=""/></a>
+    </div>
+	
+	<div id="foldSidebar"><i class="fa fa-outdent" title="展开/收起侧边导航"></i></div>
+	
+    <div class="index-search-container">
+      <div class="index-sitemap">
+
+        <div class="sitemap-menu">
+          <div class="title-bar">
+            <h2> <i class="icon-sitemap"></i>管理导航<em>小提示：添加您经常使用的功能到首页侧边栏，方便操作。</em> </h2>
+            <span id="closeSitemap" class="close">X</span></div>
+		
+		  <div class="root-nav-div">
+			<ul class="root-nav-ul">
+				<?php echo $none_click_nav;?>
+			</ul>
+			<div  style="clear:both;"></div>
+		  </div>
+		  
+		  
+		  
+		
+          <div id="quicklink_list" class="content">
+
+		  
+            <?php if(!empty($output['menu']) && is_array($output['menu'])) { ?>
+			
+				<?php foreach($output['menu'] as $group_key => $sub_menu) {  ?>
+					
+					<?php foreach($sub_menu['child'] as $key => $menu_value) { ?>
+					
+					<dl style="" <?php echo "group_key='" . $group_key . "'" ;?> <?php echo ($key == 'promotion' ? 'class="double"' : '');?>>
+					  <dt><?php echo $menu_value['name'];?></dt>
+					  <?php if(!empty($menu_value['child']) && is_array($menu_value['child'])) { ?>
+					  <?php foreach($menu_value['child'] as $submenu_value) { ?>
+					  
+						  <dd <?php echo "data-param='" . $submenu_value['group_key'] . "'"; ?>
+							<?php if(!empty($output['seller_quicklink'])) { echo in_array(convert_word_underscore($submenu_value['c']) . "|" . convert_word_underscore($submenu_value['a']), $output['seller_quicklink'])?'class="selected"':'';}?>>
+							
+							<i <?php echo "data-param='" . $submenu_value['group_key'] . "'"; ?> 
+							  datype="btn_add_quicklink" 
+								data-quicklink-act="<?php echo convert_word_underscore($submenu_value['c']) . "|" . convert_word_underscore($submenu_value['a']);?>" 
+								class="icon-check" title="添加为常用功能菜单">
+							</i>
+							
+							<a <?php echo "data-param='" . $submenu_value['group_key'] . "'"; ?>
+							  href="<?php echo $_PAGE_URL; ?>&c=<?php echo convert_word_underscore($submenu_value['c']);?>&a=<?php echo $submenu_value['a'];?>"> 
+								<?php echo $submenu_value['name'];?> 
+							</a>
+							
+						  </dd>
+					  
+					  <?php } ?>
+					  <?php } ?>
+					</dl>
+					<?php } ?>
+					
+				<?php } ?>
+			
+			<?php } ?>
+          
+		  </div>
+        </div>
+      </div>
+      <div class="search-bar">
+        <form method="get" target="_blank">
+           <input type="hidden" name="m" value="Shop" />
+		  <input type="hidden" name="c" value="search">
+          <input type="text" datype="search_text" name="keyword" placeholder="商城商品搜索" class="search-input-text">
+          <input type="submit" datype="search_submit" class="search-input-btn pngFix" value="">
+        </form>
+      </div>
+    </div>
+    
+	<div class="spdsc-nav">
+      <ul>
+		  
+		<li url-data="<?php echo urlShop("SellerCenter", "index");?>" 
+		onclick="openNav('platform_homepage', this);"
+		class="root_nav_li" key="homepage">
+		  <a href="javascript:void(0);">首页</a>
+		</li>
+
+	
+		<?php echo $root_nav;?>
+
+	  </ul>
+    </div>
+	
+	
+  </div>
+</header>
+<?php if(!$output['seller_layout_no_menu']) {  ?>
+<div class="spdsc-layout wrapper">
+  <div id="layoutLeft" class="spdsc-layout-left unfold">
+    <div id="sidebar" class="sidebar">
+
+      <div class="column-menu">
+        <ul id="seller_center_left_menu" class="seller_center_left_menu">
+			
+			
+			<?php echo $seller_quicklink_dom; ?>
+			
+			<?php echo $left_nav_menu; ?>
+
+        </ul>
+      </div>
+	  
+    </div>
+  </div>
+
+  
+  <div id="layoutRight" class="spdsc-layout-right">
+    <div class="spdsc-path"><i class="icon-desktop"></i>
+	
+		<i>商家管理中心</i>
+		
+		<i class="icon-angle-right"></i>
+	
+		<?php if (!( (convert_word_underscore($_GET['c']) == 'seller_center') && ($_GET['a'] == 'index' || empty($_GET['a'])) )) { ?>
+		
+			<i><?php echo $output['current_menu']['group_name'];?></i>
+			<i class="icon-angle-right"></i>
+		
+		<?php }?>
+		
+		<i><?php echo $output['current_menu']['model_name'];?></i>
+		<i class="icon-angle-right"></i>
+		<i><?php echo $output['current_menu']['name'];?></i>
+	
+	</div>
+	
+    <div class="main-content" id="mainContent">
+      {__CONTENT__}
+    </div>
+  </div>
+  
+  
+</div>
+<?php } else { ?>
+<div class="wrapper">
+      {__CONTENT__}
+</div>
+<?php } ?>
+
+<script type="text/javascript">
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+    //添加删除快捷操作
+    $('[datype="btn_add_quicklink"]').on('click', function() { 
+        var $quicklink_item = $(this).parent();
+        var item = $(this).attr('data-quicklink-act');
+		var url = $(this).parent().find("a").attr("href");
+		
+		var name = $(this).parent().find("a").html();
+		
+        if($quicklink_item.hasClass('selected')) { 
+            $.post("<?php echo urlShop('seller_center', 'quicklink_del');?>", { item: item }, function(data) { 
+                $quicklink_item.removeClass('selected');
+                $(".seller_center_left_menu li[quick-link-key='" + item + "']").remove();
+            }, "json");
+        } else {
+            var count = $('#quicklink_list').find('dd.selected').length;
+            if(count >= 8) { 
+                showError('快捷操作最多添加8个');
+            } else {
+                $.post("<?php echo urlShop('seller_center', 'quicklink_add');?>", { item: item }, function(data) { 
+                    $quicklink_item.addClass('selected');
+                    <?php if (convert_word_underscore($_GET['c']) == 'seller_center') {  ?>
+
+						new_menu = "<li quick-link-key='"  + 
+							item + 
+							"' url-data='" + 
+							url + 
+							"' onclick='" + 
+							"openItem('" + 
+							item + 
+							"', this);' active='0' >" + 
+							"<a active='0' href='javascript:void(0);' group_key='' menu_key='" + 
+							item + 
+							"' >" + 
+							name +
+							"</a></li>";
+						
+						//console.log(new_menu);
+
+						$(".quick-link-div:first-child dl:first-child dd ul").append(new_menu);
+                    
+					<?php } ?>
+                }, "json");
+            }
+        }
+    });
+
+    // 搜索商品不能为空
+    $('input[datype="search_submit"]').click(function(){ 
+        if ($('input[datype="search_text"]').val() == '') { 
+            return false;
+        }
+    });
+});
+</script>
+
+<include file="common/footer" />
+<div id="tbox">
+  <div class="btn" id="msg"><a href="<?php echo urlShop('store_msg', 'index');?>"><i class="msg"><?php if ($output['store_msg_num'] > 0) {  ?><em><?php echo $output['store_msg_num'];?></em><?php } ?></i>站内消息</a></div>
+  <div class="btn" id="im"><i class="im"><em id="new_msg" style="display:none;"></em></i><a href="javascript:void(0);">在线联系</a></div>
+  <div class="btn" id="gotop" style="display:none;"><i class="top"></i><a href="javascript:void(0);">返回顶部</a></div>
+</div>
+</body>
+</html>

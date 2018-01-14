@@ -1,0 +1,30 @@
+<?php defined('IN_SHOPDA') || exit;?>
+<?php if($output['is_goods']){  ?>
+
+    <include file="layout/goods_layout"/>
+
+<?php
+}else{
+?>
+    <include file="layout/common_layout"/>
+<?php
+}
+?>
+
+<?php if(!$output['is_search']){ 
+?>
+    <include file="layout/cur_local"/>
+
+<?php
+}
+?>
+
+
+{__CONTENT__}
+
+
+
+<include file="common/footer"/>
+
+</body>
+</html>

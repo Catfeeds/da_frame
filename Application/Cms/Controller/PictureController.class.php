@@ -1,0 +1,219 @@
+<?php
+/**
+ * cms文章
+ *
+ *
+ * * @大商城 (c) 2014-2018 SHOPDA Inc. http://www.shopda.cn
+ * @license    http://www.shopda.cn
+ * @link       交流群号：387110194
+ * @since      大商城荣誉出品
+ */
+
+
+namespace Cms\Controller;
+use Common\Lib\Language;
+use Cms\Controller\CMSHomeController;
+use Common\Lib\Model;
+use Common\Lib\Page;
+
+
+class PictureController extends CMSHomeController {
+
+    public function __construct() {
+        parent::__construct();
+        $this->assign('index_sign', 'picture');
+    }
+
+    public function index() {
+        $this->picture_list();
+    }
+
+    /**
+     * 文章列表
+     */
+    public function picture_list() {
+        //画报列表
+        $conition = array();
+        if(!empty($_GET['class_id'])) {
+            $conition['picture_class_id'] = intval($_GET['class_id']);
+        }
+        $conition['picture_state'] = self::ARTICLE_STATE_PUBLISHED;
+        $model_picture = Model('cms_picture');
+        $picture_list = $model_picture->getList($conition, 12, 'picture_sort asc, picture_id desc');
+        $this->assign('show_page', $model_picture->showpage(2));
+        $this->assign('total_num', $model_picture->gettotalnum());
+        $this->assign('picture_list', $picture_list);
+
+        //推荐画报
+        $this->get_hot_picture_list();
+
+        $this->render('picture_list');
+    }
+
+    /**
+     * 推荐画报
+     */
+    private function get_hot_picture_list() {
+        $model_picture = Model('cms_picture');
+        $condition = array();
+        $condition['picture_state'] = self::ARTICLE_STATE_PUBLISHED;
+        $condition['picture_commend_flag'] = self::COMMEND_FLAG_TRUE;
+        $hot_picture_list = $model_picture->getList($condition, NULL, 'picture_click desc', '*', 5);
+        $this->assign('hot_picture_list', $hot_picture_list);
+    }
+
+    /**
+     * 画报详细页
+     */
+    public function picture_detail() {
+        $picture_id = intval($_GET['picture_id']);
+        if($picture_id <= 0) {
+            showMessage(Language::get('wrong_argument'),'','','error');
+        }
+
+        $model_picture = Model('cms_picture');
+        $picture_detail = $model_picture->getOne(array('picture_id'=>$picture_id));
+        if(empty($picture_detail)) {
+            showMessage(Language::get('picture_not_exist'), CMS_SITE_URL, '', 'error');
+        }
+
+        $model_picture_image = Model('cms_picture_image');
+        $picture_image_list = $model_picture_image->getList(array('image_picture_id'=>$picture_id),NULL);
+        $this->assign('picture_image_list', $picture_image_list);
+
+        $conition = array();
+        $conition['picture_state'] = self::ARTICLE_STATE_PUBLISHED;
+        $conition['picture_id'] = array('lt', $picture_id);
+        $pre_picture = $model_picture->getList($conition, null, 'picture_id desc', '*', 1);
+        $this->assign('pre_picture', $pre_picture[0]);
+        $conition['picture_id'] = array('gt', $picture_id);
+        $next_picture = $model_picture->getList($conition, null, 'picture_id asc', '*', 1);
+        $this->assign('next_picture', $next_picture[0]);
+
+        //计数加1
+        $model_picture->modify(array('picture_click'=>array('exp','picture_click+1')),array('picture_id'=>$picture_id));
+
+        //标签
+        $model_tag = Model('cms_tag');
+        $cms_tag_list = $model_tag->getList(TRUE, null, 'tag_sort asc', '', 10);
+        $cms_tag_list = array_under_reset($cms_tag_list, 'tag_id');
+        $this->assign('cms_tag_list', $cms_tag_list);
+
+        //分享
+        $this->get_share_app_list();
+
+        //seo
+        $this->assign('seo_title', $picture_detail['picture_title']);
+
+        $this->assign('picture_detail', $picture_detail);
+        $this->assign('detail_object_id', $picture_id);
+        $this->render('picture_detail');
+    }
+
+    /**
+     * 画报评论
+     */
+    public function picture_comment_detail() {
+        $picture_id = intval($_GET['picture_id']);
+        if($picture_id <= 0) {
+            showMessage(Language::get('wrong_argument'),'','','error');
+        }
+
+        $model_picture = Model('cms_picture');
+        $picture_detail = $model_picture->getOne(array('picture_id'=>$picture_id));
+        if(empty($picture_detail)) {
+            showMessage(Language::get('picture_not_exist'), CMS_SITE_URL, '', 'error');
+        }
+
+        $picture_hot_comment = $model_picture->getList(array('picture_state'=>self::ARTICLE_STATE_PUBLISHED), null, 'picture_comment_count desc', '*', 10);
+        $this->assign('hot_comment', $picture_hot_comment);
+
+        $this->assign('picture_detail', $picture_detail);
+        $this->assign('detail_object_id', $picture_id);
+        $this->assign('comment_all', 'all');
+
+        //推荐文章
+        $this->get_article_comment();
+
+        $this->render('comment_detail');
+    }
+
+
+    /**
+     * 画报详细页(图片列表)
+     */
+    public function picture_detail_image() {
+        $picture_id = intval($_GET['picture_id']);
+        if($picture_id <= 0) {
+            showMessage(Language::get('wrong_argument'),'','','error');
+        }
+
+        $model_picture = Model('cms_picture');
+        $picture_detail = $model_picture->getOne(array('picture_id'=>$picture_id));
+        if(empty($picture_detail)) {
+            showMessage(Language::get('picture_not_exist'), CMS_SITE_URL, '', 'error');
+        }
+
+        $model_picture_image = Model('cms_picture_image');
+        $picture_image_list = $model_picture_image->getList(array('image_picture_id'=>$picture_id), 25);
+        $this->assign('show_page', $model_picture_image->showpage(2));
+        $this->assign('picture_image_list', $picture_image_list);
+
+        //计数加1
+        $model_picture->modify(array('picture_click'=>array('exp','picture_click+1')),array('picture_id'=>$picture_id));
+
+        //推荐画报
+        $this->get_hot_picture_list();
+
+        $this->assign('picture_detail', $picture_detail);
+        $this->assign('comment_object_id', $picture_id);
+        $this->render('picture_detail.image');
+    }
+
+
+    /**
+     * 画报搜索
+     */
+    public function picture_search() {
+        $condition = array();
+        $condition['picture_title'] = array("like",'%'.trim($_GET['keyword']).'%');
+        $condition['picture_state'] = self::ARTICLE_STATE_PUBLISHED;
+        $model_picture = Model('cms_picture');
+        $picture_list = $model_picture->getList($condition, 20, 'picture_sort asc, picture_id desc');
+        $this->assign('show_page', $model_picture->showpage(2));
+        $this->assign('total_num', $model_picture->gettotalnum());
+        $this->assign('picture_list', $picture_list);
+
+        //推荐画报
+        $this->get_hot_picture_list();
+
+        $this->render('picture_list');
+    }
+
+    /**
+     * 根据标签搜索
+     */
+    public function picture_tag_search() {
+        $picture_list = array();
+        if(intval($_GET['tag_id']) > 0) {
+            $model_picture = Model('cms_picture');
+
+            $condition = array();
+            $condition['relation_tag_id'] = intval($_GET['tag_id']);
+            $condition['picture_state'] = self::ARTICLE_STATE_PUBLISHED;
+            $picture_list = $model_picture->getListByTagID($condition, 20, 'picture_sort asc, picture_id desc');
+
+            $this->assign('show_page', $model_picture->showpage(2));
+            $this->assign('total_num', $model_picture->gettotalnum());
+        }
+
+        $this->assign('picture_list', $picture_list);
+
+        //推荐画报
+        $this->get_hot_picture_list();
+
+        $this->render('picture_list');
+    }
+
+
+}

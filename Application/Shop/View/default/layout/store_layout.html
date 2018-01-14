@@ -1,0 +1,46 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+<include file="layout/goods_layout" />
+<include file="common/global_vars"/>
+
+<link href="<?php echo SHOP_TEMPLATES_URL;?>/css/shop.css" rel="stylesheet" type="text/css">
+<link href="<?php echo SHOP_TEMPLATES_URL?>/css/shop_custom.css" rel="stylesheet" type="text/css">
+<link href="<?php echo SHOP_VIEW_BASE_URL;?>/<?php echo TPL_SHOP_NAME;?>/store/style/<?php echo $output['store_theme'];?>/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="<?php echo RESOURCE_SITE_URL;?>/js/member.js" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo SHOP_RESOURCE_SITE_URL;?>/js/shop.js" charset="utf-8"></script>
+<div id="store_decoration_content" class="background" style="<?php echo $output['decoration_background_style'];?>">
+<?php if(!empty($output['decoration_nav'])) { ?>
+  <style>
+<?php echo $output['decoration_nav']['style'];?>
+</style>
+  <?php } ?>
+  {__CONTENT__}
+  <div class="clear">&nbsp;</div>
+</div>
+
+<include file="common/footer"/>
+
+<script type="text/javascript">
+$(function(){ 
+	var storeTrends	= true;
+	$('.favorites').mouseover(function(){ 
+		var $this = $(this);
+		if(storeTrends){ 
+			$.getJSON('<?php echo $_PAGE_URL; ?>&c=ShowStore&a=ajax_store_trend_count&store_id=<?php echo $output['store_info']['store_id'];?>', function(data){ 
+				$this.find('li:eq(2)').find('a').html(data.count);
+				storeTrends = false;
+			});
+		}
+	});
+
+	$('a[datype="share_store"]').click(function(){ 
+		<?php if ($_SESSION['is_login'] !== '1'){ ?>
+		login_dialog();
+		<?php } else {?>
+		ajax_form('sharestore', '分享店铺', '<?php echo $_PAGE_URL; ?>&c=MemberSnsindex&a=sharestore_one&inajax=1&sid=<?php echo $output['store_info']['store_id'];?>');
+		<?php }?>
+	});
+});
+
+</script>
+</body></html>

@@ -1,0 +1,95 @@
+<?php defined('IN_SHOPDA') || exit;?>
+<include file="common/global_vars"/>
+
+
+
+<div class="tabmenu">
+  <include file="layout/submenu"/>
+</div>
+<form method="get" action="<?php echo $_PAGE_URL; ?>">
+  <input type="hidden" name="m" value="Shop" />
+  <input type="hidden" name="c" value="StoreConsult" />
+  <input type="hidden" name="a" value="consult_list" />
+  <?php if (in_array($_GET['type'], array('to_reply', 'replied'))) { ?>
+  <input type="hidden" name="type" value="<?php echo $_GET['type'];?>" />
+  <?php }?>
+  <table class="search-form">
+    <tr>
+      <td>&nbsp;</td>
+      <th>咨询类型</th>
+      <td class="w160"><select name="ctid" class="w150">
+          <option value="0">全部</option>
+          <?php if (!empty($output['consult_type'])) { ?>
+          <?php foreach ($output['consult_type'] as $val) { ?>
+          <option <?php if (intval($_GET['ctid']) == $val['ct_id']) { ?>selected="selected"<?php }?> value="<?php echo $val['ct_id']; ?>"><?php echo $val['ct_name'];?></option>
+          <?php }?>
+          <?php }?>
+        </select></td>
+      <td class="tc w70"><label class="submit-border"><input type="submit" class="submit" value="<?php echo $lang['spd_search'];?>" /></label></td>
+    </tr>
+  </table>
+</form>
+<table class="spdsc-default-table">
+  <thead>
+    <tr>
+      <th class="w30"></th>
+      <th><?php echo $lang['store_consult_reply'];?></th>
+      <th class="w30"></th>
+      <th class="w110"><?php echo $lang['spd_handle'];?></th>
+    </tr>
+    <?php if (count($output['list_consult'])>0) {  ?>
+    <tr>
+      <td class="tc"><input id="all" type="checkbox" class="checkall" /></td>
+      <td colspan="20"><label for="all"><?php echo $lang['spd_select_all'];?></label>
+        <a href="javascript:void(0);" class="spdbtn-mini" spd_type="batchbutton" uri="<?php echo $_PAGE_URL; ?>&c=StoreConsult&a=drop_consult" name="id" confirm="<?php echo $lang['spd_ensure_del'];?>"><i class="icon-trash"></i><?php echo $lang['spd_del'];?></a></td>
+    </tr>
+    <?php }?>
+  </thead>
+  <tbody>
+    <?php if (count($output['list_consult'])>0) {  ?>
+    <?php foreach($output['list_consult'] as $consult){ ?>
+    <tr>
+      <th colspan="20" class="tl"><input type="checkbox"  value="<?php echo $consult['consult_id'];?>" class="checkitem ml10 mr10" />
+        <span><a href="<?php echo $_PAGE_URL; ?>&c=Goods&goods_id=<?php echo $consult['goods_id'];?>" target="_blank"><?php echo $consult['goods_name'];?></a></span><span class="ml20"><?php echo $lang['store_consult_list_consult_member'].$lang['spd_colon'];?></span>
+        <?php if($consult['member_id'] == "0"){  echo $lang['spd_guest']; } else { echo $consult['isanonymous'] == 1?str_cut($consult['member_name'],2).'***':$consult['member_name']; }?>
+        <?php if ($consult['member_id']>0 && $consult['isanonymous'] == 0) {  ?>
+        <span member_id="<?php echo $consult['member_id'];?>"></span>
+        <?php }?>
+        <span class="ml20"><?php echo $lang['store_consult_list_consult_time'].$lang['spd_colon'];?><em class="spdgoods-time"><?php echo date("Y-m-d H:i:s",$consult['consult_addtime']);?></em></span></th>
+    </tr>
+    <tr>
+      <td rowspan="2"></td>
+      <td class="tl"><strong><?php echo $lang['store_consult_list_consult_content'].$lang['spd_colon'];?></strong><span class="gray"><?php echo nl2br($consult['consult_content']);?></span></td>
+      <td rowspan="2"></td>
+      <td rowspan="2" class="nscs-table-handle vt"><?php if($consult['consult_reply'] == ''){ ?>
+        <span><a href="javascript:void(0);" class="btn-aqua" spd_type="dialog" dialog_id="my_qa_reply" dialog_title="<?php echo $lang['store_consult_list_reply_consult'];?>" dialog_width="460" uri="<?php echo $_PAGE_URL; ?>&c=StoreConsult&a=reply_consult&id=<?php echo $consult['consult_id'];?>"><i class="icon-comments-alt "></i><p><?php echo $lang['store_consult_list_reply'];?></p></a></span>
+        <?php }else{?>
+        <span><a href="javascript:void(0);" spd_type="dialog" dialog_id="my_qa_edit_reply" dialog_title="<?php echo $lang['store_consult_list_reply_consult'];?>" dialog_width="480" uri="<?php echo $_PAGE_URL; ?>&c=StoreConsult&a=reply_consult&id=<?php echo $consult['consult_id'];?>" class="btn-bluejeans"><i class="icon-edit"></i><p><?php echo $lang['spd_edit'];?></p></a></span>
+        <?php }?>
+        <span><a href="javascript:void(0)" onclick="ajax_get_confirm('<?php echo $lang['spd_ensure_del'];?>', '<?php echo $_PAGE_URL; ?>&c=StoreConsult&a=drop_consult&id=<?php echo $consult['consult_id'];?>');" class="btn-grapefruit"><i class="icon-trash"></i><p><?php echo $lang['spd_del'];?></p></a> </span></td>
+    </tr>
+
+    <tr><?php if($consult['consult_reply']!=""){ ?>
+      <td class="tl"><strong><?php echo $lang['store_consult_list_my_reply'].$lang['spd_colon'];?></strong><span class="gray"><?php echo nl2br($consult['consult_reply']);?></span><span class="ml10 spdgoods-time">(<?php echo date("Y-m-d H:i:s",$consult['consult_reply_time']);?>)</span></td>
+    <?php }?></tr>
+
+    <?php }?>
+    <?php }else{?>
+    <tr>
+      <td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span><?php echo $lang['no_record'];?></span></div></td>
+    </tr>
+    <?php }?>
+  </tbody>
+  <tfoot>
+    <?php if (count($output['list_consult'])>0) {  ?>
+    <tr>
+      <th class="tc"><input id="all" type="checkbox" class="checkall" /></th>
+      <th colspan="20"><label for="all2"><?php echo $lang['spd_select_all'];?></label>
+        <a href="javascript:void(0);" class="spdbtn-mini" spd_type="batchbutton" uri="<?php echo $_PAGE_URL; ?>&c=StoreConsult&a=drop_consult" name="id" confirm="<?php echo $lang['spd_ensure_del'];?>"><i class="icon-trash"></i><?php echo $lang['spd_del'];?></a></th>
+    </tr>
+    <tr>
+      <td colspan="20"><div class="pagination"><?php echo $output['show_page']; ?></div></td>
+    </tr>
+    <?php }?>
+  </tfoot>
+</table>

@@ -1,0 +1,134 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+<include file="common/global_vars"/>
+<style>
+.game {
+float:left;
+min-width:600px;
+min-height:800px;
+/*
+width:600px;
+height:800px;   
+*/
+margin-top:10px;
+margin-bottom:200px;
+
+
+margin-left:20px;
+}
+.game-preview-iframe {
+
+ frameborder : 0;
+ scrolling:no; 
+background-color:white;
+allowtransparency:true;
+border:2px solid #ff9000;
+}
+.qr-code {
+margin-top:10px;
+float:right;
+width:280px;
+height:280px;
+margin-right:20px;
+}
+
+.qr-code  img {
+width:200px;
+height:200px;
+}
+</style>
+
+
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <a class="back" href="<?php echo $_PAGE_URL; ?>&c=FunnyGames&a=game_lists" 
+      	title="返回游戏列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+      	
+      <div class="subject">
+
+        <h3>游戏预览-<?php echo $game_arr['game_name'];?></h3>
+        <h5>游戏预览</h5>
+      </div>
+    </div>
+  </div>
+  <div class="explanation" id="explanation">
+    <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="<?php echo $lang['spd_prompts_title'];?>"><?php echo $lang['spd_prompts'];?></h4>
+      <span id="explanationZoom" title="<?php echo $lang['spd_prompts_span'];?>"></span> </div>
+
+  </div>
+
+
+	  <div class="game">
+	      <iframe   src="<?php echo $game_url ;?>"  
+	      frameborder="0" scrolling="no"  allowTransparency="true" class="game-preview-iframe" 
+	      id="game-preview-iframe"
+	      onLoad="iframe_auto_resize()"
+	      ></iframe>
+	  </div>
+	  
+	 
+	<script type="text/javascript">
+	function iframe_auto_resize() {   
+		var ifm= document.getElementById("game-preview-iframe");   
+		var subWeb = document.frames ? document.frames["game-preview-iframe"].document : ifm.contentDocument;   
+		if((ifm != null && subWeb != null) && (subWeb.body.scrollHeight > 320)) {
+		   ifm.height = subWeb.body.scrollHeight;
+		   ifm.width = subWeb.body.scrollWidth;
+		} else {
+			ifm.height="800px";
+			ifm.width="600px";
+		}
+	}   
+	</script>
+	  
+	<div class="qr-code">
+	  <img src="<?php echo urlShop('Daqr', 'gen_qr_code', array('url_content' => $game_url));?>" />
+	</div>
+	  
+
+  
+  
+</div>
+<script>
+$(function(){ 
+	$('.nyroModal').nyroModal();
+	//图片上传
+ 	var textButton="<input type='text' name='textfield' id='textfield1' class='type-file-text' /><input type='button' name='button' id='button1' value='选择上传...' class='type-file-button' />"
+	$(textButton).insertBefore("#mobile_wx");
+	$("#mobile_wx").change(function(){ 
+	$("#textfield1").val($("#mobile_wx").val());
+});	
+//按钮先执行验证再提交表单	
+	$("#submitBtn").click(function(){ 
+    if($("#link_form").valid()){ 
+        <?php if ($output['mobile_wx']) {  ?>
+        if ($('#mobile_wx').val() == '') { 
+        	if(!confirm('您未选择要上传的图片，继续保存会清除现有图片，确认继续提交吗')){ 
+            	return false;
+        	}
+        }
+        <?php } ?>
+        $("#link_form").submit();
+	}
+	});
+
+	$('#link_form').validate({
+        errorPlacement: function(error, element){ 
+        	var error_td = element.parents('dl').find('span.err');
+            error_td.append(error);
+        },
+        rules : {
+        	mobile_wx : {
+                accept : 'png|jpe?g|gif'
+            }
+        },
+        messages : {
+        	mobile_wx : {
+                accept   : '<i class="fa fa-exclamation-circle"></i>图片格式错误'
+            }
+        }
+    });
+});
+</script> 

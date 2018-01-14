@@ -1,0 +1,26 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+
+<include file="layout/top" />
+
+<include file="common/global_vars"/>
+
+<include file="layout/nav" />
+ 
+<div class="warp-all"><div class="no-content-b"><i class="article"></i>
+{__CONTENT__}
+
+</div></div>
+
+<script type="text/javascript">
+<?php if (!empty($output['url'])){ 
+?>
+	window.setTimeout("javascript:location.href='<?php echo $output['url'];?>'", <?php echo $time;?>);
+<?php
+}else{
+?>
+	window.setTimeout("javascript:history.back()", <?php echo $time;?>);
+<?php
+}?>
+</script>
+<include file="layout/footer" />

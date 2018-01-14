@@ -1,0 +1,61 @@
+<?php defined('IN_SHOPDA') || exit;?>
+<include file="common/global_vars"/>
+
+
+<style>
+.spds-info .btns .chat_online, .spds-info .btns .chat_offline {padding-left:10px;  width:73px;  line-height:21px !important;background: url("<?php echo BASE_CHAT_STATIC_URL;?>/images/chat_state_01.gif") no-repeat;}
+.spds-info .btns .chat_online { background-position: 8px 2px;}
+.spds-info .btns .chat_offline { background-position: 8px -19px;}
+.spds-info .btns span a:hover { background: url("<?php echo BASE_CHAT_STATIC_URL;?>/images/chat_state_01.gif") no-repeat 8px 2px;;}
+</style>
+<!--店铺基本信息 S-->
+<div class="spds-info">
+  <div class="content">
+<div class="store-logo"><a title="<?php echo $output['store_info']['store_name'];?>" target="_blank" href="<?php echo urlShop('show_store', 'index', array('store_id' => $output['store_info']['store_id']), $output['store_info']['store_domain']);?>" ><img src="<?php echo getStoreLogo($output['store_info']['store_label'],'store_logo');?>" alt="<?php echo $output['store_info']['store_name'];?>"></a></div>
+     <div class="title">
+    <h4><a class="name" title="<?php echo $output['store_info']['store_name'];?>" target="_blank" href="<?php echo urlShop('show_store', 'index', array('store_id' => $output['store_info']['store_id']), $output['store_info']['store_domain']);?>" ><?php echo $output['store_info']['store_name']; ?></a><?php if ($output['store_info']['is_own_shop']) {  ?><em>自营</em><?php } ?></h4>
+  </div>
+    
+    
+    <?php if (!$output['store_info']['is_own_shop']) {  ?>
+	<div class="score-infor">
+	 <div class="score-sum"><span class="number <?php echo $value['percent_class'];?>"><?php echo $output['store_info']['store_credit_average'];?></span></div>
+    <div class="spds-detail-rate">
+      <ul>
+        <?php  foreach ($output['store_info']['store_credit'] as $value) { ?>
+        <li>
+          <h5><?php echo $value['text'];?></h5>
+          <div class="<?php echo $value['percent_class'];?>" title="<?php echo $value['percent_text'];?><?php echo $value['percent'];?>"><?php echo $value['credit'];?><i></i></div>
+        </li>
+        <?php } ?>
+      </ul>
+      </div>
+    </div>
+<?php } ?>
+    
+    <?php if(!empty($output['store_info']['store_qq']) || !empty($output['store_info']['store_ww'])){ ?>
+    <?php } ?>
+    <div class="btns clearfix"><a href="<?php echo urlShop('show_store', 'index', array('store_id' => $output['store_info']['store_id']), $output['store_info']['store_domain']);?>" class="goto" >进店逛逛</a><a href="javascript:collect_store('<?php echo $output['store_info']['store_id'];?>','count','store_collect')" >收藏店铺<span>(<em datype="store_collect"><?php echo $output['store_info']['store_collect']; ?></em>)</span></a>
+   <?php if(!empty($output['store_info']['store_qq'])){ ?>
+        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=<?php echo $output['store_info']['store_qq'];?>&site=qq&menu=yes" title="QQ: <?php echo $output['store_info']['store_qq'];?>"><img border="0" src="http://wpa.qq.com/pa?p=2:<?php echo $output['store_info']['store_qq'];?>:8" style=" vertical-align: middle;"/></a>
+        <?php }?>
+        <?php if(C('node_chat')){  ?>
+        <span member_id="<?php echo $output['store_info']['member_id'];?>" ></span>
+        <?php }else{ ?>
+        <?php if(!empty($output['store_info']['store_ww'])){ ?>
+        <a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v=2&amp;uid=<?php echo $output['store_info']['store_ww'];?>&site=cntaobao&s=1&charset=<?php echo CHARSET;?>" ><img border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid=<?php echo $output['store_info']['store_ww'];?>&site=cntaobao&s=2&charset=<?php echo CHARSET;?>" alt="<?php echo $lang['spd_message_me'];?>" style=" vertical-align: text-bottom;"/> 旺旺</a>
+        <?php }?>
+	<?php }?>
+     </div>
+  </div>
+</div>
+ 
+<script>
+$(function(){ 
+	var store_id = "<?php echo $output['store_info']['store_id']; ?>";
+	var goods_id = "<?php echo $_GET['goods_id']; ?>";
+	var c = "<?php echo convert_word_underscore(trim($_GET['c'])); ?>";
+	var a  = "<?php echo trim($_GET['a']) != ''?trim($_GET['a']):'index'; ?>";
+	$.getJSON("<?php echo $_PAGE_URL; ?>&c=ShowStore&a=ajax_flowstat_record",{store_id:store_id,goods_id:goods_id,c_param:c,a_param:a});
+});
+</script> 

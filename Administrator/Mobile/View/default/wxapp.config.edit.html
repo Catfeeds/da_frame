@@ -1,0 +1,49 @@
+<?php defined('IN_SHOPDA') || exit;?>
+
+<include file="common/global_vars"/>
+
+
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>微信小程序</h3>
+        <h5>微信小程序配置</h5>
+      </div>
+  </div>
+  <div class="explanation" id="explanation">
+    <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="<?php echo $lang['spd_prompts_title'];?>"><?php echo $lang['spd_prompts'];?></h4>
+      <span id="explanationZoom" title="<?php echo $lang['spd_prompts_span'];?>"></span> </div>
+    <ul>
+      <li>启用前需在微信开放平台注册，并获得相应的appid与appkey。</li>
+    </ul>
+  </div>
+  <form method="post" name="settingForm">
+    <input type="hidden" name="form_submit" value="ok" />
+    <div class="spdap-form-default">
+
+      <dl class="row">
+        <dt class="tit">
+          <label for="app_qq_akey">应用标识</label>
+        </dt>
+        <dd class="opt">
+          <input id="app_wxapp_appid" name="app_wxapp_appid" value="<?php echo $output['list_setting']['app_wxapp_appid'];?>" class="input-txt" type="text">
+          <p class="notic"><a class="spdap-btn" target="_blank" href="https://mp.weixin.qq.com/">立即在线申请</a></p>
+        </dd>
+      </dl>
+      
+      <dl class="row">
+        <dt class="tit">
+          <label for="app_wxapp_appkey">应用密钥</label>
+        </dt>
+        <dd class="opt">
+          <input id="app_wxapp_appkey" name="app_wxapp_appkey" value="<?php echo $output['list_setting']['app_wxapp_appkey'];?>" class="input-txt" type="text">
+          <p class="notic">&nbsp;</p>
+        </dd>
+      </dl>
+      
+      <div class="bot"><a href="JavaScript:void(0);" class="spdap-btn-big spdap-btn-green" onclick="document.settingForm.submit()"><?php echo $lang['spd_submit'];?></a></div>
+    </div>
+  </form>
+</div>

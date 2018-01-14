@@ -1,0 +1,46 @@
+<?php defined('IN_SHOPDA') || exit;?>
+<include file="common/global_vars"/>
+
+
+
+<div class="tabmenu">
+  <include file="layout/submenu"/>
+</div>
+<table class="spdsc-default-table">
+  <?php if(!empty($output['list']) && is_array($output['list'])){ ?>
+  <thead>
+    <tr>
+      <th class="w20">&nbsp;</th>
+      <th class="tl w200"><?php echo $lang['store_activity_theme'];?></th>
+      <th class="tl"><?php echo $lang['store_activity_intro'];?></th>
+      <th class="w150"><?php echo $lang['store_activity_start_time'];?></th>
+      <th class="w150"><?php echo $lang['store_activity_end_time'];?></th>
+      <th class="w90"><?php echo $lang['spd_handle'];?></th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach($output['list'] as $k => $v){ ?>
+    <tr>
+      <td></td>
+      <td class="tl"><a target="_blank" href="<?php echo $_PAGE_URL; ?>&c=Activity&activity_id=<?php echo $v['activity_id'];?>"><?php echo $v['activity_title']; ?></a></td>
+      <td class="tl"><?php echo $v['activity_desc'];?></td>
+      <td class="spdgoods-time"><?php echo @date('Y-m-d',$v['activity_start_date']);?></td>
+      <td class="spdgoods-time"><?php echo @date('Y-m-d',$v['activity_end_date']);?></td>
+      <td class="nscs-table-handle"><span><a id="a_<?php echo $v['activity_id'];?>" href="<?php echo $_PAGE_URL; ?>&c=StoreActivity&a=activity_apply&activity_id=<?php echo $v['activity_id'];?>"  class="btn-mint"><i class="icon-edit"></i>
+        <p><?php echo $lang['store_activity_join'];?></p>
+        </a></span></td>
+    </tr>
+    <?php } } else { ?>
+    <tr>
+      <td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span><?php echo $lang['no_record'];?></span></div></td>
+    </tr>
+    <?php } ?>
+  </tbody>
+  <tfoot>
+    <?php if(!empty($output['list']) && is_array($output['list'])){ ?>
+    <tr>
+      <td colspan="20"><div class="pagination"><?php echo $output['show_page'];?></div></td>
+    </tr>
+    <?php }?>
+  </tfoot>
+</table>
